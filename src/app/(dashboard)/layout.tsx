@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { Navbar } from '@/components/layout/Navbar';
 import { ToastProvider } from '@/components/ui/Toast';
 import { FileUploadModal } from '@/components/documents/FileUploadModal';
 import { CommandPaletteModal } from '@/components/search/CommandPaletteModal';
+import { useThemeStore } from '@/stores/themeStore';
 
 export default function DashboardLayout({
   children,
@@ -15,10 +16,15 @@ export default function DashboardLayout({
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
   const [searchModalOpen, setSearchModalOpen] = useState(false);
+  const { initTheme } = useThemeStore();
+
+  useEffect(() => {
+    initTheme();
+  }, [initTheme]);
 
   return (
     <ToastProvider>
-      <div className="min-h-screen flex bg-slate-50/50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors">
+      <div className="min-h-screen flex bg-[#FAF9F5] dark:bg-[#0A0A0A] text-[#18181B] dark:text-slate-100 transition-colors">
         {/* Sidebar */}
         <Sidebar
           mobileOpen={mobileSidebarOpen}

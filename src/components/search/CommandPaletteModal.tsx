@@ -2,10 +2,9 @@
 
 import React, { useState } from 'react';
 import { Modal } from '@/components/ui/Modal';
-import { Search, Sparkles, FileText, ArrowRight } from 'lucide-react';
+import { Search, Sparkles, FileText } from 'lucide-react';
 import { INITIAL_SEARCH_RESULTS } from '@/utils/mockData';
 import { Badge } from '@/components/ui/Badge';
-import useRouter from 'next/navigation';
 import Link from 'next/link';
 
 interface CommandPaletteModalProps {
@@ -30,15 +29,15 @@ export const CommandPaletteModal: React.FC<CommandPaletteModalProps> = ({
     <Modal isOpen={isOpen} onClose={onClose} maxWidth="xl">
       <div className="space-y-4">
         {/* Input bar */}
-        <div className="relative flex items-center border-b border-slate-200 dark:border-slate-800 pb-3">
-          <Search className="w-5 h-5 text-blue-600 dark:text-blue-400 absolute left-2" />
+        <div className="relative flex items-center border-b border-[#E6E4DF] dark:border-[#27272A] pb-3">
+          <Search className="w-5 h-5 text-[#18181B] dark:text-slate-200 absolute left-2" />
           <input
             type="text"
             autoFocus
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search contracts or ask AI e.g. 'Show contracts with automatic renewal'..."
-            className="w-full pl-10 pr-4 py-2 text-sm bg-transparent border-none focus:outline-none text-slate-900 dark:text-slate-100 placeholder:text-slate-400"
+            className="w-full pl-10 pr-4 py-2 text-xs bg-transparent border-none focus:outline-none text-[#18181B] dark:text-slate-100 placeholder:text-slate-400 font-semibold"
           />
         </div>
 
@@ -58,9 +57,9 @@ export const CommandPaletteModal: React.FC<CommandPaletteModalProps> = ({
                 <button
                   key={prompt}
                   onClick={() => setQuery(prompt)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-950 text-xs text-slate-700 dark:text-slate-300 transition-colors"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#EFECE6] dark:bg-[#1C1C1C] hover:bg-[#E7E4DC] dark:hover:bg-[#27272A] text-xs text-slate-700 dark:text-slate-300 font-medium transition-colors border border-[#E2DFD6] dark:border-[#27272A]"
                 >
-                  <Sparkles className="w-3.5 h-3.5 text-blue-500" />
+                  <Sparkles className="w-3.5 h-3.5 text-[#18181B] dark:text-slate-300" />
                   {prompt}
                 </button>
               ))}
@@ -80,14 +79,14 @@ export const CommandPaletteModal: React.FC<CommandPaletteModalProps> = ({
                 key={res.id}
                 href={`/documents/${res.documentId}`}
                 onClick={onClose}
-                className="group flex items-start justify-between p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors border border-transparent hover:border-slate-200/80 dark:hover:border-slate-700"
+                className="group flex items-start justify-between p-3 rounded-xl hover:bg-[#FAF9F5] dark:hover:bg-[#1C1C1C] transition-colors border border-transparent hover:border-[#E6E4DF] dark:hover:border-[#27272A]"
               >
                 <div className="flex items-start gap-3">
-                  <div className="p-2 rounded-lg bg-blue-50 dark:bg-blue-950 text-blue-600 mt-0.5">
+                  <div className="p-2 rounded-lg bg-[#EFECE6] dark:bg-[#1C1C1C] text-[#18181B] dark:text-slate-200 mt-0.5 border border-[#E2DFD6] dark:border-[#27272A]">
                     <FileText className="w-4 h-4" />
                   </div>
                   <div>
-                    <h5 className="text-xs font-semibold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+                    <h5 className="text-xs font-bold text-[#18181B] dark:text-slate-100 flex items-center gap-2">
                       {res.documentTitle}
                       <span className="text-[10px] text-slate-400 font-normal">({res.section})</span>
                     </h5>

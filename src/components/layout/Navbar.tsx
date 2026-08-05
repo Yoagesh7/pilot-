@@ -35,7 +35,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       <div className="flex items-center gap-3">
         <button
           onClick={onToggleMobileSidebar}
-          className="p-2 rounded-xl text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800 lg:hidden transition-colors"
+          className="p-2 rounded-xl text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-[#1C1C1C] lg:hidden transition-colors"
         >
           <Menu className="w-5 h-5" />
         </button>
@@ -64,7 +64,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* Mobile Search Button */}
         <button
           onClick={onOpenSearchModal}
-          className="p-2 rounded-xl text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 md:hidden transition-colors"
+          className="p-2 rounded-xl text-slate-500 hover:bg-slate-100 dark:hover:bg-[#1C1C1C] md:hidden transition-colors"
         >
           <Search className="w-5 h-5" />
         </button>
@@ -72,7 +72,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* Theme Toggle */}
         <button
           onClick={toggleTheme}
-          className="p-2 rounded-xl text-slate-500 hover:text-[#18181B] dark:text-slate-400 dark:hover:text-slate-100 hover:bg-[#F0EEE8] dark:hover:bg-slate-800 transition-colors"
+          className="p-2 rounded-xl text-slate-500 hover:text-[#18181B] dark:text-slate-400 dark:hover:text-slate-100 hover:bg-[#F0EEE8] dark:hover:bg-[#1C1C1C] transition-colors"
           title="Toggle Light / Dark Mode"
         >
           {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4" />}
@@ -82,7 +82,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div className="relative">
           <button
             onClick={() => setShowNotifications(!showNotifications)}
-            className="relative p-2 rounded-xl text-slate-500 hover:text-[#18181B] dark:text-slate-400 dark:hover:text-slate-100 hover:bg-[#F0EEE8] dark:hover:bg-slate-800 transition-colors"
+            className="relative p-2 rounded-xl text-slate-500 hover:text-[#18181B] dark:text-slate-400 dark:hover:text-slate-100 hover:bg-[#F0EEE8] dark:hover:bg-[#1C1C1C] transition-colors"
           >
             <Bell className="w-4 h-4" />
             <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-amber-500" />
@@ -98,19 +98,19 @@ export const Navbar: React.FC<NavbarProps> = ({
                   exit={{ opacity: 0, y: 8, scale: 0.95 }}
                   className="absolute right-0 mt-2 w-80 sm:w-96 p-2 bg-white dark:bg-[#141414] border border-[#E6E4DF] dark:border-[#27272A] rounded-2xl shadow-xl z-40"
                 >
-                  <div className="flex items-center justify-between px-3 py-2 border-b border-slate-100 dark:border-slate-800">
+                  <div className="flex items-center justify-between px-3 py-2 border-b border-slate-100 dark:border-[#27272A]">
                     <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100">Notifications</h4>
-                    <span className="text-[11px] font-bold text-[#18181B] dark:text-slate-200 bg-[#F0EEE8] dark:bg-slate-800 px-2 py-0.5 rounded-full">
+                    <span className="text-[11px] font-bold text-[#18181B] dark:text-slate-200 bg-[#F0EEE8] dark:bg-[#1C1C1C] px-2 py-0.5 rounded-full">
                       2 new
                     </span>
                   </div>
 
-                  <div className="divide-y divide-slate-100 dark:divide-slate-800/60 max-h-64 overflow-y-auto">
+                  <div className="divide-y divide-slate-100 dark:divide-[#27272A] max-h-64 overflow-y-auto">
                     {notifications.map((n) => (
                       <div
                         key={n.id}
                         className={`p-3 text-xs flex gap-2 transition-colors ${
-                          n.unread ? 'bg-[#FAF9F5] dark:bg-[#1C1C1C]' : 'hover:bg-slate-50 dark:hover:bg-slate-800/50'
+                          n.unread ? 'bg-[#FAF9F5] dark:bg-[#1C1C1C]' : 'hover:bg-slate-50 dark:hover:bg-[#1C1C1C]/50'
                         }`}
                       >
                         <div className="w-2 h-2 rounded-full bg-amber-500 shrink-0 mt-1" />
@@ -131,7 +131,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div className="relative">
           <button
             onClick={() => setShowUserMenu(!showUserMenu)}
-            className="flex items-center gap-2.5 p-1.5 rounded-xl hover:bg-[#F0EEE8] dark:hover:bg-slate-800 transition-colors"
+            className="flex items-center gap-2.5 p-1.5 rounded-xl hover:bg-[#F0EEE8] dark:hover:bg-[#1C1C1C] transition-colors"
           >
             <Avatar name={user?.name || 'Sarah Jenkins'} src={user?.avatar} size="sm" />
             <div className="hidden sm:flex flex-col text-left">
@@ -155,10 +155,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                   exit={{ opacity: 0, y: 8, scale: 0.95 }}
                   className="absolute right-0 mt-2 w-64 p-2 bg-white dark:bg-[#141414] border border-[#E6E4DF] dark:border-[#27272A] rounded-2xl shadow-xl z-40"
                 >
-                  <div className="p-3 border-b border-slate-100 dark:border-slate-800">
+                  <div className="p-3 border-b border-slate-100 dark:border-[#27272A]">
                     <p className="text-sm font-bold text-slate-900 dark:text-slate-100">{user?.name || 'Sarah Jenkins'}</p>
                     <p className="text-xs text-slate-500 truncate">{user?.email || 'sarah.jenkins@acmelegal.com'}</p>
-                    <div className="mt-2 inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold rounded-md bg-[#F0EEE8] dark:bg-slate-800 text-slate-800 dark:text-slate-200">
+                    <div className="mt-2 inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold rounded-md bg-[#F0EEE8] dark:bg-[#1C1C1C] text-slate-800 dark:text-slate-200">
                       <Shield className="w-3 h-3" />
                       {user?.role || 'Senior Counsel'}
                     </div>
@@ -168,7 +168,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     <Link
                       href="/settings"
                       onClick={() => setShowUserMenu(false)}
-                      className="block px-3 py-2 text-xs font-medium rounded-xl text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                      className="block px-3 py-2 text-xs font-medium rounded-xl text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#1C1C1C] transition-colors"
                     >
                       Account Settings
                     </Link>

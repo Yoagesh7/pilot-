@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @layer base {
   :root {
     --font-serif: var(--font-serif), "Playfair Display", Georgia, serif;
@@ -37,16 +39,16 @@
     --popover-foreground: 0 0% 98%;
     --primary: 0 0% 98%; /* #FAFAFA */
     --primary-foreground: 0 0% 9%;
-    --secondary: 0 0% 12%; /* #1F1F1F */
+    --secondary: 0 0% 11%; /* #1C1C1C */
     --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 12%;
+    --muted: 0 0% 11%;
     --muted-foreground: 0 0% 64%;
-    --accent: 0 0% 14%;
+    --accent: 0 0% 15%;
     --accent-foreground: 0 0% 98%;
     --destructive: 0 62% 40%;
     --destructive-foreground: 0 0% 100%;
-    --border: 0 0% 16%; /* #27272A neutral border */
-    --input: 0 0% 16%;
+    --border: 0 0% 15%; /* #27272A neutral border */
+    --input: 0 0% 15%;
     --ring: 0 0% 85%;
   }
 }
@@ -100,8 +102,8 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #E2DFD7;
-  border-radius: 9999px;
+  background: #D6D3CC;
+  border-radius: 10px;
 }
 
 .dark ::-webkit-scrollbar-thumb {
@@ -109,7 +111,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #C8C4B8;
+  background: #B0ADA5;
 }
 
 .dark ::-webkit-scrollbar-thumb:hover {

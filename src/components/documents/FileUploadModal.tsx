@@ -149,10 +149,10 @@ export const FileUploadModal: React.FC<FileUploadModalProps> = ({ isOpen, onClos
                   onDrop={handleDrop}
                   className={`relative border-2 border-dashed rounded-2xl p-8 text-center transition-all cursor-pointer flex flex-col items-center justify-center ${
                     isDragOver
-                      ? 'border-[#18181B] bg-[#EFECE6]/50 dark:bg-slate-900/60 scale-[0.99]'
+                      ? 'border-[#18181B] bg-[#EFECE6]/50 dark:bg-[#1C1C1C] scale-[0.99]'
                       : selectedFile
                       ? 'border-emerald-600 bg-emerald-50/30 dark:bg-emerald-950/20'
-                      : 'border-[#D6D3CC] dark:border-slate-700 hover:border-[#18181B] bg-[#FAF9F5] dark:bg-[#141414]'
+                      : 'border-[#D6D3CC] dark:border-[#27272A] hover:border-[#18181B] bg-[#FAF9F5] dark:bg-[#141414]'
                   }`}
                 >
                   <input
