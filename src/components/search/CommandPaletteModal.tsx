@@ -1,0 +1,113 @@
+'use client';
+
+import React, { useState } from 'react';
+import { Modal } from '@/components/ui/Modal';
+import { Search, Sparkles, FileText, ArrowRight } from 'lucide-react';
+import { INITIAL_SEARCH_RESULTS } from '@/utils/mockData';
+import { Badge } from '@/components/ui/Badge';
+import useRouter from 'next/navigation';
+import Link from 'next/link';
+
+interface CommandPaletteModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export const CommandPaletteModal: React.FC<CommandPaletteModalProps> = ({
+  isOpen,
+  onClose,
+}) => {
+  const [query, setQuery] = useState('');
+
+  const filtered = INITIAL_SEARCH_RESULTS.filter(
+    (res) =>
+      res.documentTitle.toLowerCase().includes(query.toLowerCase()) ||
+      res.clauseTitle.toLowerCase().includes(query.toLowerCase()) ||
+      res.snippet.toLowerCase().includes(query.toLowerCase())
+  );
+
+  return (
+    <Modal isOpen={isOpen} onClose={onClose} maxWidth="xl">
+      <div className="space-y-4">
+        {/* Input bar */}
+        <div className="relative flex items-center border-b border-slate-200 dark:border-slate-800 pb-3">
+          <Search className="w-5 h-5 text-blue-600 dark:text-blue-400 absolute left-2" />
+          <input
+            type="text"
+            autoFocus
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search contracts or ask AI e.g. 'Show contracts with automatic renewal'..."
+            className="w-full pl-10 pr-4 py-2 text-sm bg-transparent border-none focus:outline-none text-slate-900 dark:text-slate-100 placeholder:text-slate-400"
+          />
+        </div>
+
+        {/* Suggested Prompts */}
+        {!query && (
+          <div className="space-y-2">
+            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+              Suggested AI Searches
+            </span>
+            <div className="flex flex-wrap gap-2">
+              {[
+                'Contracts with automatic renewal',
+                'Uncapped data breach liability',
+                '30-day termination notice clauses',
+                'IP assignment & AI training rights',
+              ].map((prompt) => (
+                <button
+                  key={prompt}
+                  onClick={() => setQuery(prompt)}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-950 text-xs text-slate-700 dark:text-slate-300 transition-colors"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-blue-500" />
+                  {prompt}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Results */}
+        <div className="space-y-2 max-h-72 overflow-y-auto pt-2">
+          {filtered.length === 0 ? (
+            <div className="p-8 text-center text-xs text-slate-400">
+              No matching legal clauses found for &quot;{query}&quot;
+            </div>
+          ) : (
+            filtered.map((res) => (
+              <Link
+                key={res.id}
+                href={`/documents/${res.documentId}`}
+                onClick={onClose}
+                className="group flex items-start justify-between p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors border border-transparent hover:border-slate-200/80 dark:hover:border-slate-700"
+              >
+                <div className="flex items-start gap-3">
+                  <div className="p-2 rounded-lg bg-blue-50 dark:bg-blue-950 text-blue-600 mt-0.5">
+                    <FileText className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h5 className="text-xs font-semibold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+                      {res.documentTitle}
+                      <span className="text-[10px] text-slate-400 font-normal">({res.section})</span>
+                    </h5>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">
+                      &quot;{res.snippet}&quot;
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex flex-col items-end gap-1 shrink-0 ml-3">
+                  <Badge riskLevel={res.riskLevel} size="sm" />
+                  <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
+                    {res.confidenceScore}% Match
+                  </span>
+                </div>
+              </Link>
+            ))
+          )}
+        </div>
+      </div>
+    </Modal>
+  );
+};
