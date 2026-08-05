@@ -50,7 +50,7 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 10, scale: 0.95 }}
               className={clsx(
-                'pointer-events-auto flex items-start gap-3 p-4 rounded-xl shadow-xl border glass-panel',
+                'pointer-events-auto flex items-start gap-3 p-4 rounded-none shadow-xl border glass-panel',
                 toast.type === 'success' && 'border-emerald-500/30 text-emerald-900 dark:text-emerald-100',
                 toast.type === 'error' && 'border-rose-500/30 text-rose-900 dark:text-rose-100',
                 toast.type === 'info' && 'border-blue-500/30 text-blue-900 dark:text-blue-100'

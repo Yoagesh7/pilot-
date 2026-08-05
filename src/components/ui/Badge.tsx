@@ -21,7 +21,7 @@ export const Badge: React.FC<BadgeProps> = ({
     resolvedVariant = riskLevel === 'High' ? 'danger' : riskLevel === 'Medium' ? 'warning' : 'success';
   }
 
-  const base = 'inline-flex items-center font-bold tracking-wide rounded-md transition-colors';
+  const base = 'inline-flex items-center font-bold tracking-wide rounded-none transition-colors';
   const sizeClasses = size === 'sm' ? 'px-2 py-0.5 text-[10px]' : 'px-2.5 py-1 text-xs';
 
   const variants = {

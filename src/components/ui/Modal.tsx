@@ -62,7 +62,7 @@ export const Modal: React.FC<ModalProps> = ({
             exit={{ opacity: 0, scale: 0.95, y: 10 }}
             transition={{ type: 'spring', duration: 0.3 }}
             className={clsx(
-              'relative w-full rounded-2xl bg-white dark:bg-[#141414] border border-[#E6E4DF] dark:border-[#27272A] shadow-2xl z-10 overflow-hidden',
+              'relative w-full rounded-none bg-white dark:bg-[#141414] border border-[#E6E4DF] dark:border-[#27272A] shadow-2xl z-10 overflow-hidden',
               widths[maxWidth]
             )}
           >
@@ -83,7 +83,7 @@ export const Modal: React.FC<ModalProps> = ({
                 </div>
                 <button
                   onClick={onClose}
-                  className="p-2 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-[#FAF9F5] dark:hover:bg-[#1C1C1C] transition-colors"
+                  className="p-2 rounded-none text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-[#FAF9F5] dark:hover:bg-[#1C1C1C] transition-colors"
                 >
                   <X className="w-5 h-5" />
                 </button>

@@ -195,7 +195,7 @@ export default function ChatPage() {
         <div className="flex-1 p-4 sm:p-6 overflow-y-auto space-y-4">
           {currentMessages.length === 0 && (
             <div className="p-8 text-center space-y-3 max-w-md mx-auto my-auto">
-              <div className="w-12 h-12 rounded-2xl bg-[#EFECE6] dark:bg-[#1C1C1C] text-[#18181B] dark:text-slate-200 mx-auto flex items-center justify-center">
+              <div className="w-12 h-12 rounded-none bg-[#EFECE6] dark:bg-[#1C1C1C] text-[#18181B] dark:text-slate-200 mx-auto flex items-center justify-center">
                 <Bot className="w-6 h-6" />
               </div>
               <h4 className="text-sm font-bold text-[#18181B] dark:text-slate-100 font-serif">
@@ -217,17 +217,17 @@ export default function ChatPage() {
                 className={`flex gap-3 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 {msg.role === 'assistant' && (
-                  <div className="w-8 h-8 rounded-xl bg-[#18181B] text-white flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">
+                  <div className="w-8 h-8 rounded-none bg-[#18181B] text-white flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">
                     <Bot className="w-4 h-4" />
                   </div>
                 )}
 
                 <div className={`max-w-2xl space-y-2 ${msg.role === 'user' ? 'items-end' : 'items-start'}`}>
                   <div
-                    className={`p-4 rounded-2xl text-xs leading-relaxed font-medium ${
+                    className={`p-4 rounded-none text-xs leading-relaxed font-medium ${
                       msg.role === 'user'
-                        ? 'bg-[#18181B] text-white rounded-br-xs shadow-2xs'
-                        : 'bg-[#FAF9F5] dark:bg-[#141414] text-slate-900 dark:text-slate-100 rounded-bl-xs border border-[#E6E4DF] dark:border-[#27272A]'
+                        ? 'bg-[#18181B] text-white shadow-2xs'
+                        : 'bg-[#FAF9F5] dark:bg-[#141414] text-slate-900 dark:text-slate-100 border border-[#E6E4DF] dark:border-[#27272A]'
                     }`}
                   >
                     {/* Confidence Score Header Badge */}
@@ -237,7 +237,7 @@ export default function ChatPage() {
                           <ShieldCheck className="w-3.5 h-3.5" /> LEGALOS AI Response
                         </span>
                         <span
-                          className={`text-[10px] font-bold px-2 py-0.5 rounded-md border ${
+                          className={`text-[10px] font-bold px-2 py-0.5 rounded-none border ${
                             msg.confidence === 'High'
                               ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border-emerald-200/80 dark:border-emerald-800/60'
                               : msg.confidence === 'Medium'
@@ -263,7 +263,7 @@ export default function ChatPage() {
                           {msg.citations.map((cite, idx) => (
                             <div
                               key={idx}
-                              className="p-2 rounded-xl bg-white dark:bg-[#1A1A1A] border border-[#E0DDD5] dark:border-[#27272A] text-[11px] text-slate-700 dark:text-slate-300 font-mono"
+                              className="p-2 rounded-none bg-white dark:bg-[#1A1A1A] border border-[#E0DDD5] dark:border-[#27272A] text-[11px] text-slate-700 dark:text-slate-300 font-mono"
                             >
                               {cite}
                             </div>
@@ -283,7 +283,7 @@ export default function ChatPage() {
                             <button
                               key={idx}
                               onClick={() => handleSend(undefined, q)}
-                              className="w-full text-left p-2 rounded-xl bg-white dark:bg-[#1C1C1C] hover:bg-[#EFECE6] dark:hover:bg-[#27272A] text-[11px] font-semibold text-[#18181B] dark:text-slate-200 border border-[#E2DFD6] dark:border-[#27272A] transition-colors flex items-center justify-between group"
+                              className="w-full text-left p-2 rounded-none bg-white dark:bg-[#1C1C1C] hover:bg-[#EFECE6] dark:hover:bg-[#27272A] text-[11px] font-semibold text-[#18181B] dark:text-slate-200 border border-[#E2DFD6] dark:border-[#27272A] transition-colors flex items-center justify-between group"
                             >
                               <span>{q}</span>
                               <ChevronRight className="w-3 h-3 text-slate-400 group-hover:text-[#18181B] dark:group-hover:text-white shrink-0 ml-2" />
@@ -313,13 +313,13 @@ export default function ChatPage() {
               animate={{ opacity: 1 }}
               className="flex items-center gap-2 text-xs text-slate-400"
             >
-              <div className="w-8 h-8 rounded-xl bg-[#18181B] text-white flex items-center justify-center shrink-0">
+              <div className="w-8 h-8 rounded-none bg-[#18181B] text-white flex items-center justify-center shrink-0">
                 <Bot className="w-4 h-4" />
               </div>
-              <div className="flex gap-1 p-3 rounded-2xl bg-[#FAF9F5] dark:bg-[#141414] border border-[#E6E4DF] dark:border-[#27272A]">
-                <span className="w-2 h-2 rounded-full bg-[#18181B] dark:bg-white animate-bounce" />
-                <span className="w-2 h-2 rounded-full bg-[#18181B] dark:bg-white animate-bounce delay-100" />
-                <span className="w-2 h-2 rounded-full bg-[#18181B] dark:bg-white animate-bounce delay-200" />
+              <div className="flex gap-1 p-3 rounded-none bg-[#FAF9F5] dark:bg-[#141414] border border-[#E6E4DF] dark:border-[#27272A]">
+                <span className="w-2 h-2 rounded-none bg-[#18181B] dark:bg-white animate-bounce" />
+                <span className="w-2 h-2 rounded-none bg-[#18181B] dark:bg-white animate-bounce delay-100" />
+                <span className="w-2 h-2 rounded-none bg-[#18181B] dark:bg-white animate-bounce delay-200" />
               </div>
             </motion.div>
           )}
@@ -334,7 +334,7 @@ export default function ChatPage() {
             value={inputQuery}
             onChange={(e) => setInputQuery(e.target.value)}
             placeholder={`Ask anything about ${activeDoc.title}...`}
-            className="flex-1 px-4 py-2.5 rounded-xl bg-[#FAF9F5] dark:bg-[#1A1A1A] border border-[#E2DFD6] dark:border-[#27272A] text-xs font-semibold text-[#18181B] dark:text-slate-100 focus:outline-none"
+            className="flex-1 px-4 py-2.5 rounded-none bg-[#FAF9F5] dark:bg-[#1A1A1A] border border-[#E2DFD6] dark:border-[#27272A] text-xs font-semibold text-[#18181B] dark:text-slate-100 focus:outline-none"
           />
           <Button
             type="submit"

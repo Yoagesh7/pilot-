@@ -16,7 +16,7 @@ export const Card: React.FC<CardProps> = ({
   return (
     <div
       className={clsx(
-        'rounded-2xl p-6 transition-all duration-200 border',
+        'rounded-none p-6 transition-all duration-200 border',
         glass
           ? 'glass-panel'
           : 'bg-white dark:bg-[#141414] border-[#E6E4DF] dark:border-[#27272A] shadow-2xs',

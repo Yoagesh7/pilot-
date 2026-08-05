@@ -117,10 +117,10 @@ export const FileUploadModal: React.FC<FileUploadModalProps> = ({ isOpen, onClos
     >
       <div className="space-y-4">
         {/* Mode Switcher Pills */}
-        <div className="flex items-center gap-2 p-1 rounded-xl bg-[#EFECE6] dark:bg-[#181818] border border-[#E2DFD6] dark:border-[#27272A] text-xs">
+        <div className="flex items-center gap-2 p-1 rounded-none bg-[#EFECE6] dark:bg-[#181818] border border-[#E2DFD6] dark:border-[#27272A] text-xs">
           <button
             onClick={() => setActiveMode('upload')}
-            className={`flex-1 py-2 px-3 rounded-lg font-bold transition-all flex items-center justify-center gap-2 ${
+            className={`flex-1 py-2 px-3 rounded-none font-bold transition-all flex items-center justify-center gap-2 ${
               activeMode === 'upload'
                 ? 'bg-white dark:bg-[#141414] text-[#18181B] dark:text-white shadow-2xs'
                 : 'text-slate-500 hover:text-slate-900 dark:hover:text-slate-200'
@@ -131,7 +131,7 @@ export const FileUploadModal: React.FC<FileUploadModalProps> = ({ isOpen, onClos
           </button>
           <button
             onClick={() => setActiveMode('json')}
-            className={`flex-1 py-2 px-3 rounded-lg font-bold transition-all flex items-center justify-center gap-2 ${
+            className={`flex-1 py-2 px-3 rounded-none font-bold transition-all flex items-center justify-center gap-2 ${
               activeMode === 'json'
                 ? 'bg-white dark:bg-[#141414] text-[#18181B] dark:text-white shadow-2xs'
                 : 'text-slate-500 hover:text-slate-900 dark:hover:text-slate-200'
@@ -154,7 +154,7 @@ export const FileUploadModal: React.FC<FileUploadModalProps> = ({ isOpen, onClos
                   }}
                   onDragLeave={() => setIsDragOver(false)}
                   onDrop={handleDrop}
-                  className={`relative border-2 border-dashed rounded-2xl p-8 text-center transition-all cursor-pointer flex flex-col items-center justify-center ${
+                  className={`relative border-2 border-dashed rounded-none p-8 text-center transition-all cursor-pointer flex flex-col items-center justify-center ${
                     isDragOver
                       ? 'border-[#18181B] bg-[#EFECE6]/50 dark:bg-[#1C1C1C] scale-[0.99]'
                       : selectedFile
@@ -169,7 +169,7 @@ export const FileUploadModal: React.FC<FileUploadModalProps> = ({ isOpen, onClos
                     className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                   />
 
-                  <div className="w-12 h-12 rounded-2xl bg-[#EFECE6] dark:bg-[#27272A] flex items-center justify-center text-[#18181B] dark:text-slate-100 mb-3 shadow-2xs">
+                  <div className="w-12 h-12 rounded-none bg-[#EFECE6] dark:bg-[#27272A] flex items-center justify-center text-[#18181B] dark:text-slate-100 mb-3 shadow-2xs">
                     <Upload className="w-6 h-6" />
                   </div>
 

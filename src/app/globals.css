@@ -27,7 +27,7 @@
     --border: 40 8% 90%; /* #E6E4DF */
     --input: 40 8% 90%;
     --ring: 0 0% 15%;
-    --radius: 1rem;
+    --radius: 0rem;
   }
 
   .dark {
@@ -70,7 +70,7 @@ body {
 .legalos-card {
   background-color: #ffffff;
   border: 1px solid #E6E4DF;
-  border-radius: 1.25rem;
+  border-radius: 0px;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.02);
   transition: all 0.2s ease-in-out;
 }

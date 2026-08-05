@@ -35,7 +35,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       <div className="flex items-center gap-3">
         <button
           onClick={onToggleMobileSidebar}
-          className="p-2 rounded-xl text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-[#1C1C1C] lg:hidden transition-colors"
+          className="p-2 rounded-none text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-[#1C1C1C] lg:hidden transition-colors"
         >
           <Menu className="w-5 h-5" />
         </button>
@@ -47,13 +47,13 @@ export const Navbar: React.FC<NavbarProps> = ({
       <div className="hidden md:flex flex-1 max-w-lg mx-6">
         <button
           onClick={onOpenSearchModal}
-          className="w-full flex items-center justify-between px-3.5 py-2 rounded-xl bg-[#EFECE6]/80 dark:bg-[#181818] border border-[#E2DFD7] dark:border-[#27272A] text-slate-500 hover:text-[#18181B] dark:hover:text-slate-200 text-xs transition-colors shadow-2xs"
+          className="w-full flex items-center justify-between px-3.5 py-2 rounded-none bg-[#EFECE6]/80 dark:bg-[#181818] border border-[#E2DFD7] dark:border-[#27272A] text-slate-500 hover:text-[#18181B] dark:hover:text-slate-200 text-xs transition-colors shadow-2xs"
         >
           <div className="flex items-center gap-2">
             <Search className="w-4 h-4 text-slate-400" />
             <span>Search contracts, clauses, or AI re...</span>
           </div>
-          <kbd className="px-1.5 py-0.5 text-[10px] font-mono font-semibold bg-white dark:bg-[#141414] rounded-md border border-[#E0DDD5] dark:border-[#27272A] text-slate-500 shadow-2xs">
+          <kbd className="px-1.5 py-0.5 text-[10px] font-mono font-semibold bg-white dark:bg-[#141414] rounded-none border border-[#E0DDD5] dark:border-[#27272A] text-slate-500 shadow-2xs">
             ⌘K
           </kbd>
         </button>
@@ -64,7 +64,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* Mobile Search Button */}
         <button
           onClick={onOpenSearchModal}
-          className="p-2 rounded-xl text-slate-500 hover:bg-slate-100 dark:hover:bg-[#1C1C1C] md:hidden transition-colors"
+          className="p-2 rounded-none text-slate-500 hover:bg-slate-100 dark:hover:bg-[#1C1C1C] md:hidden transition-colors"
         >
           <Search className="w-5 h-5" />
         </button>
@@ -72,7 +72,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* Theme Toggle */}
         <button
           onClick={toggleTheme}
-          className="p-2 rounded-xl text-slate-500 hover:text-[#18181B] dark:text-slate-400 dark:hover:text-slate-100 hover:bg-[#F0EEE8] dark:hover:bg-[#1C1C1C] transition-colors"
+          className="p-2 rounded-none text-slate-500 hover:text-[#18181B] dark:text-slate-400 dark:hover:text-slate-100 hover:bg-[#F0EEE8] dark:hover:bg-[#1C1C1C] transition-colors"
           title="Toggle Light / Dark Mode"
         >
           {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4" />}
@@ -82,10 +82,10 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div className="relative">
           <button
             onClick={() => setShowNotifications(!showNotifications)}
-            className="relative p-2 rounded-xl text-slate-500 hover:text-[#18181B] dark:text-slate-400 dark:hover:text-slate-100 hover:bg-[#F0EEE8] dark:hover:bg-[#1C1C1C] transition-colors"
+            className="relative p-2 rounded-none text-slate-500 hover:text-[#18181B] dark:text-slate-400 dark:hover:text-slate-100 hover:bg-[#F0EEE8] dark:hover:bg-[#1C1C1C] transition-colors"
           >
             <Bell className="w-4 h-4" />
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-amber-500" />
+            <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-amber-500" />
           </button>
 
           <AnimatePresence>
@@ -96,11 +96,11 @@ export const Navbar: React.FC<NavbarProps> = ({
                   initial={{ opacity: 0, y: 8, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 8, scale: 0.95 }}
-                  className="absolute right-0 mt-2 w-80 sm:w-96 p-2 bg-white dark:bg-[#141414] border border-[#E6E4DF] dark:border-[#27272A] rounded-2xl shadow-xl z-40"
+                  className="absolute right-0 mt-2 w-80 sm:w-96 p-2 bg-white dark:bg-[#141414] border border-[#E6E4DF] dark:border-[#27272A] rounded-none shadow-xl z-40"
                 >
                   <div className="flex items-center justify-between px-3 py-2 border-b border-slate-100 dark:border-[#27272A]">
                     <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100">Notifications</h4>
-                    <span className="text-[11px] font-bold text-[#18181B] dark:text-slate-200 bg-[#F0EEE8] dark:bg-[#1C1C1C] px-2 py-0.5 rounded-full">
+                    <span className="text-[11px] font-bold text-[#18181B] dark:text-slate-200 bg-[#F0EEE8] dark:bg-[#1C1C1C] px-2 py-0.5 rounded-none">
                       2 new
                     </span>
                   </div>
@@ -113,7 +113,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                           n.unread ? 'bg-[#FAF9F5] dark:bg-[#1C1C1C]' : 'hover:bg-slate-50 dark:hover:bg-[#1C1C1C]/50'
                         }`}
                       >
-                        <div className="w-2 h-2 rounded-full bg-amber-500 shrink-0 mt-1" />
+                        <div className="w-2 h-2 bg-amber-500 shrink-0 mt-1" />
                         <div className="flex-1">
                           <p className="font-medium text-slate-800 dark:text-slate-200">{n.text}</p>
                           <span className="text-[10px] text-slate-400 mt-1 block">{n.time}</span>
@@ -131,7 +131,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div className="relative">
           <button
             onClick={() => setShowUserMenu(!showUserMenu)}
-            className="flex items-center gap-2.5 p-1.5 rounded-xl hover:bg-[#F0EEE8] dark:hover:bg-[#1C1C1C] transition-colors"
+            className="flex items-center gap-2.5 p-1.5 rounded-none hover:bg-[#F0EEE8] dark:hover:bg-[#1C1C1C] transition-colors"
           >
             <Avatar name={user?.name || user?.email || 'User'} src={user?.avatar} size="sm" />
             <div className="hidden sm:flex flex-col text-left">
@@ -153,12 +153,12 @@ export const Navbar: React.FC<NavbarProps> = ({
                   initial={{ opacity: 0, y: 8, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 8, scale: 0.95 }}
-                  className="absolute right-0 mt-2 w-64 p-2 bg-white dark:bg-[#141414] border border-[#E6E4DF] dark:border-[#27272A] rounded-2xl shadow-xl z-40"
+                  className="absolute right-0 mt-2 w-64 p-2 bg-white dark:bg-[#141414] border border-[#E6E4DF] dark:border-[#27272A] rounded-none shadow-xl z-40"
                 >
                   <div className="p-3 border-b border-slate-100 dark:border-[#27272A]">
                     <p className="text-sm font-bold text-slate-900 dark:text-slate-100">{user?.name || user?.email?.split('@')[0] || 'Authenticated User'}</p>
                     <p className="text-xs text-slate-500 truncate">{user?.email || 'user@example.com'}</p>
-                    <div className="mt-2 inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold rounded-md bg-[#F0EEE8] dark:bg-[#1C1C1C] text-slate-800 dark:text-slate-200">
+                    <div className="mt-2 inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold rounded-none bg-[#F0EEE8] dark:bg-[#1C1C1C] text-slate-800 dark:text-slate-200">
                       <Shield className="w-3 h-3" />
                       {user?.role || 'Legal Counsel'}
                     </div>
@@ -168,7 +168,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     <Link
                       href="/settings"
                       onClick={() => setShowUserMenu(false)}
-                      className="block px-3 py-2 text-xs font-medium rounded-xl text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#1C1C1C] transition-colors"
+                      className="block px-3 py-2 text-xs font-medium rounded-none text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#1C1C1C] transition-colors"
                     >
                       Account Settings
                     </Link>
@@ -178,7 +178,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                         await logout();
                         window.location.href = '/login';
                       }}
-                      className="w-full flex items-center gap-2 px-3 py-2 text-xs font-medium rounded-xl text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors text-left"
+                      className="w-full flex items-center gap-2 px-3 py-2 text-xs font-medium rounded-none text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors text-left"
                     >
                       <LogOut className="w-4 h-4" />
                       Sign Out

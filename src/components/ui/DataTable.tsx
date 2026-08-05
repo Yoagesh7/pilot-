@@ -24,7 +24,7 @@ export function DataTable<T extends { id: string }>({
   className,
 }: DataTableProps<T>) {
   return (
-    <div className={clsx('w-full overflow-x-auto rounded-2xl border border-[#E6E4DF] dark:border-[#27272A] bg-white dark:bg-[#141414] shadow-2xs', className)}>
+    <div className={clsx('w-full overflow-x-auto rounded-none border border-[#E6E4DF] dark:border-[#27272A] bg-white dark:bg-[#141414] shadow-2xs', className)}>
       <table className="w-full text-left text-sm">
         <thead className="bg-[#FAF9F5] dark:bg-[#1A1A1A] text-[10px] font-bold text-slate-500 uppercase tracking-widest border-b border-[#E6E4DF] dark:border-[#27272A]">
           <tr>

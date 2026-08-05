@@ -28,7 +28,7 @@ export const Accordion: React.FC<AccordionProps> = ({
   };
 
   return (
-    <div className={clsx('divide-y divide-[#E6E4DF] dark:divide-[#27272A] rounded-2xl border border-[#E6E4DF] dark:border-[#27272A] bg-white dark:bg-[#141414] overflow-hidden', className)}>
+    <div className={clsx('divide-y divide-[#E6E4DF] dark:divide-[#27272A] rounded-none border border-[#E6E4DF] dark:border-[#27272A] bg-white dark:bg-[#141414] overflow-hidden', className)}>
       {items.map((item) => {
         const isOpen = openId === item.id;
         return (
