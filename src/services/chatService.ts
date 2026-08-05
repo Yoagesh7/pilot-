@@ -69,35 +69,10 @@ ${documentContext}`;
         const raw = await response.json().catch(() => response.text());
         parsedReply = parseAiChatResponse(raw);
       } else {
-        console.warn(`[ChatService] Chat webhook returned ${response.status}`);
+        console.warn(`[ChatService] Chat webhook returned HTTP ${response.status}`);
       }
     } catch (err: any) {
       console.error('[ChatService] Webhook call error:', err);
-
-      // Contextual fallback based on local contract context
-      const lowerContent = question.toLowerCase();
-      if (lowerContent.includes('liability') || lowerContent.includes('cap')) {
-        parsedReply = {
-          answer: 'Based on Section 11.2 (Limitation of Liability), aggregate liability is capped at $1,000,000.',
-          confidence: 'High',
-          citations: ['Section 11.2 - Limitation of Liability'],
-          related_questions: ['What are the exceptions to the liability cap?'],
-        };
-      } else if (lowerContent.includes('renewal') || lowerContent.includes('notice')) {
-        parsedReply = {
-          answer: 'As stated in Section 4.1 (Term & Termination), written notice of non-renewal must be provided at least 30 days prior to expiration.',
-          confidence: 'High',
-          citations: ['Section 4.1 - Term & Termination Notice'],
-          related_questions: ['What is the initial term duration?'],
-        };
-      } else if (documentContext && documentContext.trim().length > 30) {
-        parsedReply = {
-          answer: `According to the selected contract context: ${documentContext.slice(0, 250)}...`,
-          confidence: 'High',
-          citations: ['Contract Document Context'],
-          related_questions: ['What are the main risk clauses?'],
-        };
-      }
     }
 
     // Insert record into Supabase chat_history table

@@ -118,91 +118,76 @@ export const documentService = {
       };
     }
 
-    // 4. Send document to AI Webhook (with multi-format & endpoint fallbacks)
+    // 4. Send PDF directly to target AI Webhook (https://api.agents.snsihub.ai/webhook/a48241af-74e5-44bd-b253-484f3480c166)
+    const webhookUrl = process.env.NEXT_PUBLIC_WEBHOOK_URL || 'https://api.agents.snsihub.ai/webhook/a48241af-74e5-44bd-b253-484f3480c166';
     let rawWebhookOutput: any = null;
-    let webhookSuccess = false;
+    let webhookErrorStr: string | null = null;
 
-    // Attempt 1: Send JSON { document_id, storage_url, user_id } to AI_WEBHOOK_URL
+    // Direct FormData Dispatch with PDF binary
     try {
-      console.log('[DocumentService] [Attempt 1] Sending JSON payload to AI Webhook:', AI_WEBHOOK_URL);
-      const jsonRes = await fetch(AI_WEBHOOK_URL, {
+      console.log(`[DocumentService] Dispatching PDF directly to AI Webhook: ${webhookUrl}`);
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('document', file);
+      formData.append('document_id', docRecord.id);
+      formData.append('user_id', user_id);
+      formData.append('storage_url', storage_url);
+
+      const response = await fetch(webhookUrl, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          document_id: docRecord.id,
-          storage_url,
-          user_id,
-        }),
+        body: formData,
       });
 
-      if (jsonRes.ok) {
-        const text = await jsonRes.text();
+      if (response.ok) {
+        const text = await response.text();
         try {
           rawWebhookOutput = JSON.parse(text);
         } catch {
           rawWebhookOutput = text;
         }
-        webhookSuccess = true;
-        console.log('[DocumentService] AI Webhook JSON attempt returned response:', rawWebhookOutput);
+        console.log('[DocumentService] AI Webhook returned response:', rawWebhookOutput);
       } else {
-        console.warn(`[DocumentService] AI Webhook JSON attempt returned HTTP ${jsonRes.status}`);
+        const errText = await response.text().catch(() => '');
+        webhookErrorStr = `HTTP ${response.status}: ${response.statusText} ${errText}`;
+        console.warn(`[DocumentService] Webhook FormData attempt returned: ${webhookErrorStr}`);
       }
     } catch (err: any) {
-      console.warn('[DocumentService] AI Webhook JSON attempt failed:', err?.message);
+      webhookErrorStr = err?.message || 'Network error connecting to webhook';
+      console.warn(`[DocumentService] Webhook FormData attempt failed: ${webhookErrorStr}`);
     }
 
-    // Attempt 2: If JSON attempt failed, try sending FormData containing the binary file
-    if (!webhookSuccess) {
+    // JSON Payload retry if FormData endpoint requires JSON headers
+    if (!rawWebhookOutput) {
       try {
-        console.log('[DocumentService] [Attempt 2] Dispatching FormData file to AI Webhook:', AI_WEBHOOK_URL);
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('document', file);
-        formData.append('document_id', docRecord.id);
-        formData.append('user_id', user_id);
-
-        const formRes = await fetch(AI_WEBHOOK_URL, {
+        console.log(`[DocumentService] Retrying Webhook with JSON payload...`);
+        const jsonRes = await fetch(webhookUrl, {
           method: 'POST',
-          body: formData,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            document_id: docRecord.id,
+            storage_url,
+            user_id,
+            file_name: file.name,
+          }),
         });
 
-        if (formRes.ok) {
-          const text = await formRes.text();
+        if (jsonRes.ok) {
+          const text = await jsonRes.text();
           try {
             rawWebhookOutput = JSON.parse(text);
           } catch {
             rawWebhookOutput = text;
           }
-          webhookSuccess = true;
-          console.log('[DocumentService] AI Webhook FormData attempt returned response:', rawWebhookOutput);
-        } else {
-          console.warn(`[DocumentService] AI Webhook FormData attempt returned HTTP ${formRes.status}`);
+          webhookErrorStr = null;
         }
       } catch (err: any) {
-        console.warn('[DocumentService] AI Webhook FormData attempt failed:', err?.message);
+        if (!webhookErrorStr) webhookErrorStr = err?.message;
       }
     }
 
-    // Attempt 3: Local Next.js API Fallback Route (/api/documents/upload)
-    if (!webhookSuccess) {
-      try {
-        console.log('[DocumentService] [Attempt 3] Sending to local API route /api/documents/upload...');
-        const localFormData = new FormData();
-        localFormData.append('file', file);
-
-        const localRes = await fetch('/api/documents/upload', {
-          method: 'POST',
-          body: localFormData,
-        });
-
-        if (localRes.ok) {
-          rawWebhookOutput = await localRes.json();
-          webhookSuccess = true;
-          console.log('[DocumentService] Local API fallback route returned response:', rawWebhookOutput);
-        }
-      } catch (err: any) {
-        console.warn('[DocumentService] Local API fallback route failed:', err?.message);
-      }
+    // STRICT RESILIENCE: If Webhook failed, throw explicit error (NO FAKE REPORT GENERATION)
+    if (!rawWebhookOutput) {
+      throw new Error(`AI Webhook Failure (${webhookUrl}): ${webhookErrorStr || 'No output received from AI endpoint'}`);
     }
 
     // 5. Parse analysis result from AI Webhook response or fallback generator

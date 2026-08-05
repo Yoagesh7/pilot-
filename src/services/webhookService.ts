@@ -36,74 +36,35 @@ export const WebhookService = {
         body: formData,
       });
 
-      if (response.ok) {
-        let res: any;
-        const contentType = response.headers.get('content-type') || '';
-        if (contentType.includes('application/json')) {
-          res = await response.json();
-        } else {
-          const textRes = await response.text();
-          try {
-            res = JSON.parse(textRes);
-          } catch {
-            res = textRes;
-          }
-        }
-
-        // Frontend fix: Extract res._responseData if present in the webhook response
-        rawData = (res && typeof res === 'object' && res._responseData !== undefined)
-          ? res._responseData
-          : (res && typeof res === 'object' && res.responseData !== undefined)
-          ? res.responseData
-          : res;
-
-        isSuccess = true;
-        console.log('[WebhookService] Primary Webhook returned output:', rawData);
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
-    } catch (err) {
-      console.warn(`[WebhookService] Primary Webhook unreachable. Trying local API endpoint ${LOCAL_API_URL}...`, err);
+
+      let res: any;
+      const contentType = response.headers.get('content-type') || '';
+      if (contentType.includes('application/json')) {
+        res = await response.json();
+      } else {
+        const textRes = await response.text();
+        try {
+          res = JSON.parse(textRes);
+        } catch {
+          res = textRes;
+        }
+      }
+
+      rawData = (res && typeof res === 'object' && res._responseData !== undefined)
+        ? res._responseData
+        : (res && typeof res === 'object' && res.responseData !== undefined)
+        ? res.responseData
+        : res;
+    } catch (err: any) {
+      console.error(`[WebhookService] Primary Webhook call error:`, err);
+      throw new Error(`Failed to send PDF to webhook (${PRIMARY_WEBHOOK_URL}): ${err?.message || 'Connection failed'}`);
     }
 
-    // 2. If Primary Webhook failed, try Local Next.js API route /api/documents/upload
-    if (!isSuccess) {
-      try {
-        console.log(`[WebhookService] Posting PDF to local backend route: ${LOCAL_API_URL}`);
-        const response = await fetch(LOCAL_API_URL, {
-          method: 'POST',
-          body: formData,
-        });
-
-        if (response.ok) {
-          let res: any;
-          const contentType = response.headers.get('content-type') || '';
-          if (contentType.includes('application/json')) {
-            res = await response.json();
-          } else {
-            const textRes = await response.text();
-            try {
-              res = JSON.parse(textRes);
-            } catch {
-              res = textRes;
-            }
-          }
-
-          rawData = (res && typeof res === 'object' && res._responseData !== undefined)
-            ? res._responseData
-            : (res && typeof res === 'object' && res.responseData !== undefined)
-            ? res.responseData
-            : res;
-
-          isSuccess = true;
-          console.log('[WebhookService] Local API backend returned output:', rawData);
-        }
-      } catch (err) {
-        console.warn(`[WebhookService] Local API endpoint unreachable. Activating default parser engine.`, err);
-      }
-    }
-
-    // 3. Fallback if both backend requests failed
-    if (!isSuccess || !rawData) {
-      rawData = generateMockWebhookAnalysis(file.name);
+    if (!rawData) {
+      throw new Error(`AI Webhook Error (${PRIMARY_WEBHOOK_URL}): The webhook did not return valid output.`);
     }
 
     if (onProgressUpdate) onProgressUpdate('done', 100);
