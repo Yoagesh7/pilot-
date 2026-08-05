@@ -6,7 +6,7 @@ import { useChatStore } from '@/stores/chatStore';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Avatar } from '@/components/ui/Avatar';
-import { MessageSquare, Send, Sparkles, FileText, Trash2, Bot, Bookmark, ChevronRight, Upload } from 'lucide-react';
+import { MessageSquare, Send, Sparkles, FileText, Trash2, Bot, Bookmark, ChevronRight, Upload, HelpCircle, ShieldCheck } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FileUploadModal } from '@/components/documents/FileUploadModal';
 
@@ -45,11 +45,11 @@ export default function ChatPage() {
     scrollToBottom();
   }, [currentMessages, isTyping]);
 
-  const handleSend = async (e?: React.FormEvent) => {
+  const handleSend = async (e?: React.FormEvent, customQuery?: string) => {
     if (e) e.preventDefault();
-    if (!inputQuery.trim() || isTyping || !activeDoc) return;
+    const q = customQuery || inputQuery;
+    if (!q.trim() || isTyping || !activeDoc) return;
 
-    const q = inputQuery;
     setInputQuery('');
     await sendMessage(activeDoc.id, q, documentContext);
   };
@@ -184,6 +184,20 @@ export default function ChatPage() {
 
         {/* Message History Feed */}
         <div className="flex-1 p-4 sm:p-6 overflow-y-auto space-y-4">
+          {currentMessages.length === 0 && (
+            <div className="p-8 text-center space-y-3 max-w-md mx-auto my-auto">
+              <div className="w-12 h-12 rounded-2xl bg-[#EFECE6] dark:bg-[#1C1C1C] text-[#18181B] dark:text-slate-200 mx-auto flex items-center justify-center">
+                <Bot className="w-6 h-6" />
+              </div>
+              <h4 className="text-sm font-bold text-[#18181B] dark:text-slate-100 font-serif">
+                LEGALOS AI Assistant Ready
+              </h4>
+              <p className="text-xs text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
+                Ask any question regarding <span className="font-bold text-[#18181B] dark:text-white">{activeDoc.title}</span>. Answers are strictly grounded in contract text.
+              </p>
+            </div>
+          )}
+
           <AnimatePresence initial={false}>
             {currentMessages.map((msg) => (
               <motion.div
@@ -207,23 +221,66 @@ export default function ChatPage() {
                         : 'bg-[#FAF9F5] dark:bg-[#141414] text-slate-900 dark:text-slate-100 rounded-bl-xs border border-[#E6E4DF] dark:border-[#27272A]'
                     }`}
                   >
-                    {msg.content}
+                    {/* Confidence Score Header Badge */}
+                    {msg.role === 'assistant' && msg.confidence && (
+                      <div className="mb-2.5 flex items-center justify-between">
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+                          <ShieldCheck className="w-3.5 h-3.5" /> LEGALOS AI Response
+                        </span>
+                        <span
+                          className={`text-[10px] font-bold px-2 py-0.5 rounded-md border ${
+                            msg.confidence === 'High'
+                              ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border-emerald-200/80 dark:border-emerald-800/60'
+                              : msg.confidence === 'Medium'
+                              ? 'bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 border-amber-200/80 dark:border-amber-800/60'
+                              : 'bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border-rose-200/80 dark:border-rose-800/60'
+                          }`}
+                        >
+                          Confidence: {msg.confidence}
+                        </span>
+                      </div>
+                    )}
+
+                    {/* Main Answer text */}
+                    <div className="whitespace-pre-wrap">{msg.content}</div>
 
                     {/* Citations Pill Box */}
                     {msg.citations && msg.citations.length > 0 && (
-                      <div className="mt-3 pt-3 border-t border-[#E6E4DF] dark:border-[#27272A] space-y-1.5">
+                      <div className="mt-3.5 pt-3 border-t border-[#E6E4DF] dark:border-[#27272A] space-y-1.5">
                         <span className="text-[10px] font-bold text-slate-600 dark:text-slate-300 uppercase tracking-widest flex items-center gap-1">
-                          <Bookmark className="w-3 h-3 text-[#18181B] dark:text-white" /> Citations & Sources:
+                          <Bookmark className="w-3 h-3 text-[#18181B] dark:text-white" /> Contract Citations:
                         </span>
-                        {msg.citations.map((cite, idx) => (
-                          <div
-                            key={idx}
-                            className="p-2 rounded-xl bg-white dark:bg-[#1A1A1A] border border-[#E0DDD5] dark:border-[#27272A] text-[11px] text-slate-700 dark:text-slate-300"
-                          >
-                            <span className="font-bold text-[#18181B] dark:text-white mr-1.5">{cite.section}:</span>
-                            &quot;{cite.snippet}&quot;
-                          </div>
-                        ))}
+                        <div className="space-y-1">
+                          {msg.citations.map((cite, idx) => (
+                            <div
+                              key={idx}
+                              className="p-2 rounded-xl bg-white dark:bg-[#1A1A1A] border border-[#E0DDD5] dark:border-[#27272A] text-[11px] text-slate-700 dark:text-slate-300 font-mono"
+                            >
+                              {cite}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Related Questions Pill Box */}
+                    {msg.related_questions && msg.related_questions.length > 0 && (
+                      <div className="mt-3.5 pt-3 border-t border-[#E6E4DF] dark:border-[#27272A] space-y-2">
+                        <span className="text-[10px] font-bold text-slate-600 dark:text-slate-300 uppercase tracking-widest flex items-center gap-1">
+                          <HelpCircle className="w-3 h-3 text-[#18181B] dark:text-white" /> Related Follow-up Questions:
+                        </span>
+                        <div className="flex flex-col gap-1.5">
+                          {msg.related_questions.map((q, idx) => (
+                            <button
+                              key={idx}
+                              onClick={() => handleSend(undefined, q)}
+                              className="w-full text-left p-2 rounded-xl bg-white dark:bg-[#1C1C1C] hover:bg-[#EFECE6] dark:hover:bg-[#27272A] text-[11px] font-semibold text-[#18181B] dark:text-slate-200 border border-[#E2DFD6] dark:border-[#27272A] transition-colors flex items-center justify-between group"
+                            >
+                              <span>{q}</span>
+                              <ChevronRight className="w-3 h-3 text-slate-400 group-hover:text-[#18181B] dark:group-hover:text-white shrink-0 ml-2" />
+                            </button>
+                          ))}
+                        </div>
                       </div>
                     )}
                   </div>
@@ -262,7 +319,7 @@ export default function ChatPage() {
         </div>
 
         {/* Input Bar */}
-        <form onSubmit={handleSend} className="p-4 border-t border-[#E6E4DF] dark:border-[#27272A] bg-white dark:bg-[#141414] flex items-center gap-3">
+        <form onSubmit={(e) => handleSend(e)} className="p-4 border-t border-[#E6E4DF] dark:border-[#27272A] bg-white dark:bg-[#141414] flex items-center gap-3">
           <input
             type="text"
             value={inputQuery}

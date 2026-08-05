@@ -96,7 +96,7 @@ export interface AnalysisResult {
 }
 
 export interface Citation {
-  clauseId: string;
+  clauseId?: string;
   section: string;
   snippet: string;
 }
@@ -106,7 +106,9 @@ export interface ChatMessage {
   documentId: string;
   role: 'user' | 'assistant';
   content: string;
-  citations?: Citation[];
+  confidence?: 'High' | 'Medium' | 'Low';
+  citations?: string[];
+  related_questions?: string[];
   timestamp: string;
   isStreaming?: boolean;
 }
