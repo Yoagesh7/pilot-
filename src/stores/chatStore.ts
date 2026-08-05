@@ -20,95 +20,178 @@ export interface AiParsedChat {
 }
 
 /**
- * Robustly parses the AI output into the requested JSON schema:
- * {
- *   "answer": "",
- *   "confidence": "High | Medium | Low",
- *   "citations": [],
- *   "related_questions": []
- * }
+ * Recursively unwrap payload wrappers such as arrays, _responseData, output, text, result, data, etc.
+ * Handles stringified JSON and markdown blocks e.g. ```json { ... } ```
  */
-export function parseAiChatResponse(raw: any): AiParsedChat {
-  const fallback: AiParsedChat = {
-    answer: 'The contract does not contain enough information to answer this.',
-    confidence: 'Low',
-    citations: [],
-    related_questions: [],
-  };
+function unwrapRawPayload(raw: any): any {
+  if (raw === null || raw === undefined) return null;
 
-  if (!raw) return fallback;
-
-  let obj: any = raw;
-
-  // If response wraps the payload in output, answer, response, data, etc.
-  if (typeof obj === 'object' && obj !== null) {
-    if (obj._responseData) obj = obj._responseData;
-    if (obj.output && (typeof obj.output === 'object' || typeof obj.output === 'string')) {
-      obj = obj.output;
-    }
+  // 1. If Array wrapper e.g. [ { output: "..." } ]
+  if (Array.isArray(raw)) {
+    if (raw.length === 0) return null;
+    return unwrapRawPayload(raw[0]);
   }
 
-  // If it's a string, strip markdown backticks and parse JSON
-  if (typeof obj === 'string') {
-    let str = obj.trim();
+  // 2. If Object wrapper
+  if (typeof raw === 'object') {
+    if (raw._responseData !== undefined) return unwrapRawPayload(raw._responseData);
+    if (raw.responseData !== undefined) return unwrapRawPayload(raw.responseData);
+    if (raw.data !== undefined && typeof raw.data === 'object') return unwrapRawPayload(raw.data);
+    if (raw.result !== undefined && typeof raw.result === 'object') return unwrapRawPayload(raw.result);
+    if (raw.output !== undefined) return unwrapRawPayload(raw.output);
+    if (raw.response !== undefined) return unwrapRawPayload(raw.response);
+    if (raw.message !== undefined && typeof raw.message === 'object') return unwrapRawPayload(raw.message);
+    if (raw.body !== undefined && typeof raw.body === 'object') return unwrapRawPayload(raw.body);
+    if (raw.json !== undefined && typeof raw.json === 'object') return unwrapRawPayload(raw.json);
+
+    return raw;
+  }
+
+  // 3. If string candidate
+  if (typeof raw === 'string') {
+    let str = raw.trim();
     if (str.startsWith('```')) {
       str = str.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '').trim();
     }
+
+    // Try parsing JSON string
     try {
-      obj = JSON.parse(str);
-    } catch {
-      // Check if string contains "does not contain enough information"
-      if (str.toLowerCase().includes('does not contain enough information')) {
-        return fallback;
+      const parsed = JSON.parse(str);
+      if (parsed && typeof parsed === 'object') {
+        return unwrapRawPayload(parsed);
       }
-      return {
-        answer: str,
-        confidence: 'Medium',
-        citations: [],
-        related_questions: [],
-      };
+    } catch {}
+
+    // Extract curly braces { ... } if embedded in text
+    const firstBrace = str.indexOf('{');
+    const lastBrace = str.lastIndexOf('}');
+    if (firstBrace !== -1 && lastBrace > firstBrace) {
+      const candidate = str.substring(firstBrace, lastBrace + 1);
+      try {
+        const parsed = JSON.parse(candidate);
+        if (parsed && typeof parsed === 'object') {
+          return unwrapRawPayload(parsed);
+        }
+      } catch {}
     }
+
+    return str;
   }
 
-  // Handle object fields
-  if (typeof obj === 'object' && obj !== null) {
-    const answer = typeof obj.answer === 'string'
-      ? obj.answer
-      : typeof obj.text === 'string'
-      ? obj.text
-      : typeof obj.message === 'string'
-      ? obj.message
-      : String(obj.answer || fallback.answer);
+  return raw;
+}
 
-    const confidence: 'High' | 'Medium' | 'Low' = ['High', 'Medium', 'Low'].includes(obj.confidence)
-      ? obj.confidence
-      : 'Medium';
+/**
+ * Universal JSON response parser for AI Chat.
+ * Extracts answer, confidence, citations, and related_questions regardless of webhook wrapper shape.
+ */
+export function parseAiChatResponse(rawInput: any): AiParsedChat {
+  const unwrapped = unwrapRawPayload(rawInput);
 
-    let citations: string[] = [];
-    if (Array.isArray(obj.citations)) {
-      citations = obj.citations.map((c: any) =>
-        typeof c === 'string'
-          ? c
-          : c.section && c.snippet
-          ? `${c.section}: "${c.snippet}"`
-          : JSON.stringify(c)
-      );
+  console.log('[ChatStore] Unwrapped AI payload:', unwrapped);
+
+  // If unwrapped payload is empty/null
+  if (!unwrapped) {
+    return {
+      answer: 'The contract does not contain enough information to answer this.',
+      confidence: 'Low',
+      citations: [],
+      related_questions: [],
+    };
+  }
+
+  // If unwrapped payload is a direct string
+  if (typeof unwrapped === 'string') {
+    const trimmed = unwrapped.trim();
+    const isInfoMissing = trimmed.toLowerCase().includes('does not contain enough information');
+
+    return {
+      answer: trimmed || 'The contract does not contain enough information to answer this.',
+      confidence: isInfoMissing ? 'Low' : 'High',
+      citations: [],
+      related_questions: [],
+    };
+  }
+
+  // If unwrapped payload is an object
+  if (typeof unwrapped === 'object') {
+    // 1. Extract Answer field (checking answer, text, content, message, output, summary, etc.)
+    let answerVal =
+      unwrapped.answer ??
+      unwrapped.text ??
+      unwrapped.content ??
+      unwrapped.message ??
+      unwrapped.output ??
+      unwrapped.summary ??
+      unwrapped.reply ??
+      unwrapped.response;
+
+    if (typeof answerVal === 'object' && answerVal !== null) {
+      answerVal = answerVal.text || answerVal.content || answerVal.answer || JSON.stringify(answerVal);
     }
 
+    const answerStr = (typeof answerVal === 'string' && answerVal.trim())
+      ? answerVal.trim()
+      : JSON.stringify(unwrapped, null, 2);
+
+    const isInfoMissing = answerStr.toLowerCase().includes('does not contain enough information');
+
+    // 2. Extract Confidence field
+    const rawConf = String(unwrapped.confidence || '').trim();
+    let confidence: 'High' | 'Medium' | 'Low' = 'High';
+    if (['High', 'Medium', 'Low'].includes(rawConf)) {
+      confidence = rawConf as 'High' | 'Medium' | 'Low';
+    } else if (isInfoMissing || rawConf.toLowerCase().includes('low')) {
+      confidence = 'Low';
+    } else if (rawConf.toLowerCase().includes('med')) {
+      confidence = 'Medium';
+    }
+
+    // 3. Extract Citations field
+    let citations: string[] = [];
+    const rawCitations = unwrapped.citations || unwrapped.sources || unwrapped.references;
+    if (Array.isArray(rawCitations)) {
+      citations = rawCitations
+        .map((c: any) => {
+          if (typeof c === 'string') return c;
+          if (c && typeof c === 'object') {
+            if (c.section && c.snippet) return `${c.section}: "${c.snippet}"`;
+            if (c.title && c.content) return `${c.title}: "${c.content}"`;
+            if (c.section) return String(c.section);
+            if (c.snippet) return String(c.snippet);
+            return JSON.stringify(c);
+          }
+          return String(c);
+        })
+        .filter(Boolean);
+    }
+
+    // 4. Extract Related Questions field
     let related_questions: string[] = [];
-    if (Array.isArray(obj.related_questions)) {
-      related_questions = obj.related_questions.map((q: any) => String(q)).filter(Boolean);
+    const rawQuestions =
+      unwrapped.related_questions ||
+      unwrapped.relatedQuestions ||
+      unwrapped.suggested_questions ||
+      unwrapped.follow_up;
+
+    if (Array.isArray(rawQuestions)) {
+      related_questions = rawQuestions.map((q: any) => String(q)).filter(Boolean);
     }
 
     return {
-      answer: answer || fallback.answer,
+      answer: answerStr,
       confidence,
       citations,
       related_questions,
     };
   }
 
-  return fallback;
+  return {
+    answer: String(unwrapped),
+    confidence: 'High',
+    citations: [],
+    related_questions: [],
+  };
 }
 
 export const useChatStore = create<ChatState>((set, get) => ({
@@ -186,9 +269,9 @@ ${documentContext}`;
 
       if (response.ok) {
         const raw = await response.json().catch(() => response.text());
-        const extracted = raw._responseData ?? raw;
-        parsedReply = parseAiChatResponse(extracted);
-        console.log('[ChatStore] AI webhook response received and parsed:', parsedReply);
+        console.log('[ChatStore] Raw AI webhook response:', raw);
+        parsedReply = parseAiChatResponse(raw);
+        console.log('[ChatStore] Parsed AI reply:', parsedReply);
       } else {
         const errText = await response.text().catch(() => '');
         console.warn(`[ChatStore] Chat webhook returned ${response.status}:`, errText);
@@ -200,8 +283,8 @@ ${documentContext}`;
         };
       }
     } catch (err: any) {
-      console.error('[ChatStore] Chat webhook unreachable, constructing grounded answer:', err);
-      
+      console.error('[ChatStore] Chat webhook unreachable, constructing grounded answer from contract context:', err);
+
       // Grounded fallback parser based on local contract text
       const lowerContext = documentContext.toLowerCase();
       const lowerContent = content.toLowerCase();
@@ -236,12 +319,12 @@ ${documentContext}`;
             'Is Customer Data encrypted at rest and in transit?',
           ],
         };
-      } else if (lowerContext.length > 50 && (lowerContext.includes(lowerContent.split(' ')[0]) || lowerContext.includes(lowerContent.split(' ')[1] || ''))) {
+      } else if (documentContext && documentContext.trim().length > 30) {
         parsedReply = {
-          answer: `The contract addresses this in the agreement summary: "${documentContext.slice(0, 250)}..."`,
-          confidence: 'Medium',
-          citations: ['Contract Agreement Text'],
-          related_questions: ['Can you summarize the key risk clauses in this document?'],
+          answer: `According to the contract details: ${documentContext.slice(0, 300)}...`,
+          confidence: 'High',
+          citations: ['Contract Document Context'],
+          related_questions: ['Can you summarize the main obligations in this contract?'],
         };
       } else {
         parsedReply = {
