@@ -10,6 +10,7 @@ import { INITIAL_API_KEYS, INITIAL_AUDIT_LOGS } from '@/utils/mockData';
 import { ApiKey, AuditLog, UserRole } from '@/types';
 import { Users, Key, ShieldCheck, Plus, CheckCircle2, Copy } from 'lucide-react';
 import { useToast } from '@/components/ui/Toast';
+import { useAuthStore } from '@/stores/authStore';
 
 interface TeamMember {
   id: string;
@@ -20,15 +21,16 @@ interface TeamMember {
 }
 
 export default function TeamAdminPage() {
+  const { user } = useAuthStore();
   const { showToast } = useToast();
   const [activeTab, setActiveTab] = useState('members');
 
-  const [members] = useState<TeamMember[]>([
-    { id: 'm-1', name: 'Sarah Jenkins', email: 's.jenkins@legalos-enterprise.com', role: 'Senior Counsel', status: 'Active' },
+  const members: TeamMember[] = [
+    { id: user?.id || 'm-1', name: user?.name || user?.email?.split('@')[0] || 'Active User', email: user?.email || 'user@example.com', role: user?.role || 'Senior Counsel', status: 'Active' },
     { id: 'm-2', name: 'Michael Chang', email: 'm.chang@legalos-enterprise.com', role: 'Legal Analyst', status: 'Active' },
     { id: 'm-3', name: 'Elena Rostova', email: 'e.rostova@legalos-enterprise.com', role: 'Auditor', status: 'Active' },
     { id: 'm-4', name: 'David Kim', email: 'd.kim@legalos-enterprise.com', role: 'Admin', status: 'Active' },
-  ]);
+  ];
 
   const [apiKeys, setApiKeys] = useState<ApiKey[]>(INITIAL_API_KEYS);
   const [auditLogs] = useState<AuditLog[]>(INITIAL_AUDIT_LOGS);

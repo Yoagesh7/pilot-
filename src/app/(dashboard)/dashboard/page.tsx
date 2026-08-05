@@ -39,10 +39,10 @@ export default function DashboardPage() {
               <span>Multi-Tenant AI Legal Hub</span>
             </div>
             <h1 className="text-3xl sm:text-4xl font-bold font-serif tracking-tight text-[#18181B] dark:text-slate-100">
-              Welcome, {user?.name || 'Legal Counsel'}
+              Welcome, {user?.name || user?.email?.split('@')[0] || 'Legal Counsel'}
             </h1>
             <p className="text-sm text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
-              Real-time contract risk analysis and multi-tenant document intelligence.
+              Signed in as <span className="font-bold text-[#18181B] dark:text-slate-200">{user?.email || 'Authenticated User'}</span> — Real-time contract risk analysis and multi-tenant document intelligence.
             </p>
           </div>
 

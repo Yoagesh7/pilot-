@@ -16,8 +16,15 @@ export default function SettingsPage() {
   const { showToast } = useToast();
 
   const [activeTab, setActiveTab] = useState('profile');
-  const [name, setName] = useState(user?.name || 'Sarah Jenkins');
-  const [email, setEmail] = useState(user?.email || 's.jenkins@legalos-enterprise.com');
+  const [name, setName] = useState(user?.name || '');
+  const [email, setEmail] = useState(user?.email || '');
+
+  React.useEffect(() => {
+    if (user) {
+      setName(user.name || '');
+      setEmail(user.email || '');
+    }
+  }, [user]);
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();

@@ -133,13 +133,13 @@ export const Navbar: React.FC<NavbarProps> = ({
             onClick={() => setShowUserMenu(!showUserMenu)}
             className="flex items-center gap-2.5 p-1.5 rounded-xl hover:bg-[#F0EEE8] dark:hover:bg-[#1C1C1C] transition-colors"
           >
-            <Avatar name={user?.name || 'Sarah Jenkins'} src={user?.avatar} size="sm" />
+            <Avatar name={user?.name || user?.email || 'User'} src={user?.avatar} size="sm" />
             <div className="hidden sm:flex flex-col text-left">
               <span className="text-xs font-bold text-[#18181B] dark:text-slate-100 leading-tight">
-                {user?.name || 'Sarah Jenkins'}
+                {user?.name || user?.email?.split('@')[0] || 'User'}
               </span>
               <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium">
-                {user?.role || 'Senior Counsel'}
+                {user?.role || 'Legal Counsel'}
               </span>
             </div>
             <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
@@ -156,11 +156,11 @@ export const Navbar: React.FC<NavbarProps> = ({
                   className="absolute right-0 mt-2 w-64 p-2 bg-white dark:bg-[#141414] border border-[#E6E4DF] dark:border-[#27272A] rounded-2xl shadow-xl z-40"
                 >
                   <div className="p-3 border-b border-slate-100 dark:border-[#27272A]">
-                    <p className="text-sm font-bold text-slate-900 dark:text-slate-100">{user?.name || 'Sarah Jenkins'}</p>
-                    <p className="text-xs text-slate-500 truncate">{user?.email || 'sarah.jenkins@acmelegal.com'}</p>
+                    <p className="text-sm font-bold text-slate-900 dark:text-slate-100">{user?.name || user?.email?.split('@')[0] || 'Authenticated User'}</p>
+                    <p className="text-xs text-slate-500 truncate">{user?.email || 'user@example.com'}</p>
                     <div className="mt-2 inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold rounded-md bg-[#F0EEE8] dark:bg-[#1C1C1C] text-slate-800 dark:text-slate-200">
                       <Shield className="w-3 h-3" />
-                      {user?.role || 'Senior Counsel'}
+                      {user?.role || 'Legal Counsel'}
                     </div>
                   </div>
 
