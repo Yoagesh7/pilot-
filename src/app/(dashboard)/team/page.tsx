@@ -3,13 +3,12 @@
 import React, { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
-import { Badge } from '@/components/ui/Badge';
 import { Avatar } from '@/components/ui/Avatar';
 import { Tabs } from '@/components/ui/Tabs';
 import { DataTable, Column } from '@/components/ui/DataTable';
 import { INITIAL_API_KEYS, INITIAL_AUDIT_LOGS } from '@/utils/mockData';
 import { ApiKey, AuditLog, UserRole } from '@/types';
-import { Users, Key, ShieldCheck, Plus, Trash2, CheckCircle2, Copy } from 'lucide-react';
+import { Users, Key, ShieldCheck, Plus, CheckCircle2, Copy } from 'lucide-react';
 import { useToast } from '@/components/ui/Toast';
 
 interface TeamMember {
@@ -24,7 +23,7 @@ export default function TeamAdminPage() {
   const { showToast } = useToast();
   const [activeTab, setActiveTab] = useState('members');
 
-  const [members, setMembers] = useState<TeamMember[]>([
+  const [members] = useState<TeamMember[]>([
     { id: 'm-1', name: 'Sarah Jenkins', email: 's.jenkins@legalos-enterprise.com', role: 'Senior Counsel', status: 'Active' },
     { id: 'm-2', name: 'Michael Chang', email: 'm.chang@legalos-enterprise.com', role: 'Legal Analyst', status: 'Active' },
     { id: 'm-3', name: 'Elena Rostova', email: 'e.rostova@legalos-enterprise.com', role: 'Auditor', status: 'Active' },
@@ -55,8 +54,8 @@ export default function TeamAdminPage() {
         <div className="flex items-center gap-3">
           <Avatar name={m.name} size="sm" />
           <div>
-            <h4 className="text-xs font-semibold text-slate-900 dark:text-slate-100">{m.name}</h4>
-            <p className="text-[11px] text-slate-400">{m.email}</p>
+            <h4 className="text-xs font-bold text-[#18181B] dark:text-slate-100">{m.name}</h4>
+            <p className="text-[11px] text-slate-400 font-medium">{m.email}</p>
           </div>
         </div>
       ),
@@ -65,7 +64,7 @@ export default function TeamAdminPage() {
       key: 'role',
       header: 'Role (RBAC)',
       render: (m) => (
-        <span className="px-2.5 py-1 text-xs font-bold rounded-lg bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
+        <span className="px-2.5 py-1 text-xs font-bold rounded-md bg-[#EFECE6] dark:bg-[#20222C] text-[#18181B] dark:text-slate-200 border border-[#E2DFD6] dark:border-[#2A2D3C]">
           {m.role}
         </span>
       ),
@@ -74,7 +73,7 @@ export default function TeamAdminPage() {
       key: 'status',
       header: 'Status',
       render: (m) => (
-        <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950 px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800">
+        <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-800 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded-md border border-emerald-200/80 dark:border-emerald-800/60">
           <CheckCircle2 className="w-3.5 h-3.5" /> {m.status}
         </span>
       ),
@@ -86,10 +85,10 @@ export default function TeamAdminPage() {
       key: 'name',
       header: 'Key Identifier',
       render: (k) => (
-        <div className="flex items-center gap-2">
-          <Key className="w-4 h-4 text-blue-600" />
+        <div className="flex items-center gap-2.5">
+          <Key className="w-4 h-4 text-[#18181B] dark:text-slate-200" />
           <div>
-            <h4 className="text-xs font-semibold text-slate-900 dark:text-slate-100">{k.name}</h4>
+            <h4 className="text-xs font-bold text-[#18181B] dark:text-slate-100">{k.name}</h4>
             <span className="text-[11px] font-mono text-slate-400">{k.keyPrefix}</span>
           </div>
         </div>
@@ -98,17 +97,17 @@ export default function TeamAdminPage() {
     {
       key: 'createdAt',
       header: 'Created On',
-      render: (k) => <span className="text-xs text-slate-500">{k.createdAt}</span>,
+      render: (k) => <span className="text-xs text-slate-500 font-medium">{k.createdAt}</span>,
     },
     {
       key: 'lastUsed',
       header: 'Last Ingestion',
-      render: (k) => <span className="text-xs text-slate-500 font-medium">{k.lastUsed}</span>,
+      render: (k) => <span className="text-xs text-slate-500 font-bold">{k.lastUsed}</span>,
     },
     {
       key: 'actions',
       header: 'Copy Token',
-      render: (k) => (
+      render: () => (
         <Button
           size="sm"
           variant="outline"
@@ -127,15 +126,15 @@ export default function TeamAdminPage() {
       header: 'User',
       render: (a) => (
         <div>
-          <span className="text-xs font-semibold text-slate-900 dark:text-slate-100 block">{a.userName}</span>
-          <span className="text-[10px] text-slate-400">{a.userEmail}</span>
+          <span className="text-xs font-bold text-[#18181B] dark:text-slate-100 block">{a.userName}</span>
+          <span className="text-[10px] text-slate-400 font-medium">{a.userEmail}</span>
         </div>
       ),
     },
     {
       key: 'action',
       header: 'Action Taken',
-      render: (a) => <span className="text-xs font-semibold text-blue-600 dark:text-blue-400">{a.action}</span>,
+      render: (a) => <span className="text-xs font-bold text-[#18181B] dark:text-slate-200">{a.action}</span>,
     },
     {
       key: 'target',
@@ -145,7 +144,7 @@ export default function TeamAdminPage() {
     {
       key: 'timestamp',
       header: 'Timestamp',
-      render: (a) => <span className="text-xs text-slate-400">{a.timestamp}</span>,
+      render: (a) => <span className="text-xs text-slate-400 font-medium">{a.timestamp}</span>,
     },
   ];
 
@@ -153,10 +152,10 @@ export default function TeamAdminPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100">
+        <h1 className="text-3xl font-bold font-serif tracking-tight text-[#18181B] dark:text-slate-100">
           Admin Panel & Team Governance
         </h1>
-        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium">
           Manage workspace team roles (RBAC), API ingestion keys, and security audit trails.
         </p>
       </div>
@@ -174,7 +173,7 @@ export default function TeamAdminPage() {
       />
 
       {activeTab === 'members' && (
-        <Card className="space-y-4">
+        <Card className="space-y-4 p-6">
           <div className="flex items-center justify-between">
             <div>
               <CardTitle>Organization Members</CardTitle>
@@ -189,7 +188,7 @@ export default function TeamAdminPage() {
       )}
 
       {activeTab === 'apikeys' && (
-        <Card className="space-y-4">
+        <Card className="space-y-4 p-6">
           <div className="flex items-center justify-between">
             <div>
               <CardTitle>SNS Workbench & Integration API Keys</CardTitle>
@@ -204,8 +203,8 @@ export default function TeamAdminPage() {
       )}
 
       {activeTab === 'audit' && (
-        <Card className="space-y-4">
-          <CardHeader>
+        <Card className="space-y-4 p-6">
+          <CardHeader className="pb-2">
             <CardTitle>System Audit Logs</CardTitle>
             <CardDescription>Immutable record of user actions and webhook events</CardDescription>
           </CardHeader>

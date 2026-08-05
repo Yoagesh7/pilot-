@@ -12,7 +12,6 @@ import {
   BarChart3,
   Users,
   Settings,
-  Scale,
   X,
   Upload,
 } from 'lucide-react';
@@ -44,18 +43,22 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const pathname = usePathname();
 
   const sidebarContent = (
-    <div className="flex flex-col h-full bg-white dark:bg-slate-900 border-r border-slate-200/80 dark:border-slate-800 transition-colors">
-      {/* Brand Logo & Header */}
-      <div className="h-16 flex items-center justify-between px-6 border-b border-slate-100 dark:border-slate-800/80">
-        <Link href="/dashboard" className="flex items-center gap-2.5 group">
-          <div className="flex items-center justify-center w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-700 via-blue-600 to-indigo-600 text-white shadow-md shadow-blue-500/25 group-hover:scale-105 transition-transform">
-            <Scale className="w-5 h-5" />
+    <div className="flex flex-col h-full bg-[#FAF9F5] dark:bg-[#0E0F13] border-r border-[#E6E4DF] dark:border-[#22242D] transition-colors">
+      {/* Brand Logo & Header matching image */}
+      <div className="h-20 flex items-center justify-between px-6">
+        <Link href="/dashboard" className="flex items-center gap-3 group">
+          <div className="flex items-center justify-center w-9 h-9 rounded-xl bg-[#18181B] text-white shadow-xs">
+            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M4 20h16" />
+              <path d="M6 16l6-12 6 12" />
+              <path d="M8 12h8" />
+            </svg>
           </div>
           <div className="flex flex-col">
-            <span className="text-lg font-extrabold tracking-tight text-slate-900 dark:text-slate-100">
-              LEGAL<span className="text-blue-600 dark:text-blue-400">OS</span>
+            <span className="text-xl font-bold tracking-tight font-serif text-[#18181B] dark:text-slate-100 uppercase">
+              LEGALOS
             </span>
-            <span className="text-[9px] uppercase tracking-widest font-semibold text-slate-400 -mt-1">
+            <span className="text-[9px] uppercase tracking-widest font-semibold text-slate-400 -mt-0.5">
               Legal AI Platform
             </span>
           </div>
@@ -70,14 +73,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </button>
       </div>
 
-      {/* Quick Upload CTA */}
-      <div className="p-4">
+      {/* Quick Upload CTA - Solid Dark Pill Button from image */}
+      <div className="px-5 mb-3">
         <button
           onClick={() => {
             onOpenUploadModal();
             onCloseMobile();
           }}
-          className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-xs font-semibold shadow-md shadow-blue-600/20 active:scale-[0.98] transition-all"
+          className="w-full flex items-center justify-center gap-2.5 px-4 py-3 rounded-xl bg-[#18181B] hover:bg-black dark:bg-white dark:hover:bg-slate-100 text-white dark:text-[#18181B] text-xs font-bold tracking-wide shadow-xs active:scale-[0.98] transition-all"
         >
           <Upload className="w-4 h-4" />
           <span>Upload Contract</span>
@@ -85,7 +88,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       {/* Navigation links */}
-      <nav className="flex-1 px-3 py-2 space-y-1 overflow-y-auto">
+      <nav className="flex-1 px-4 py-2 space-y-1 overflow-y-auto">
         {NAVIGATION_ITEMS.map((item) => {
           const isActive = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href));
           const Icon = item.icon;
@@ -96,33 +99,24 @@ export const Sidebar: React.FC<SidebarProps> = ({
               href={item.href}
               onClick={onCloseMobile}
               className={clsx(
-                'group relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium transition-all duration-200 select-none',
+                'group relative flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all duration-150 select-none',
                 isActive
-                  ? 'bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 font-semibold'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100/70 dark:hover:bg-slate-800/60'
+                  ? 'bg-[#EAE8E1] dark:bg-[#1E202A] text-[#18181B] dark:text-white font-bold shadow-2xs'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-[#18181B] dark:hover:text-slate-100 hover:bg-[#F2F0EA] dark:hover:bg-[#181920]'
               )}
             >
-              {/* Active Indicator Pillar */}
-              {isActive && (
-                <motion.div
-                  layoutId="activePillar"
-                  className="absolute left-0 top-2 bottom-2 w-1 rounded-r-full bg-blue-600 dark:bg-blue-400"
-                  transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                />
-              )}
-
               <Icon
                 className={clsx(
                   'w-4 h-4 transition-colors',
                   isActive
-                    ? 'text-blue-600 dark:text-blue-400'
-                    : 'text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-200'
+                    ? 'text-[#18181B] dark:text-white'
+                    : 'text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-200'
                 )}
               />
               <span className="flex-1">{item.name}</span>
 
               {item.badge && (
-                <span className="px-1.5 py-0.5 text-[9px] font-extrabold rounded-md bg-blue-100 dark:bg-blue-900/80 text-blue-700 dark:text-blue-300">
+                <span className="px-1.5 py-0.5 text-[9px] font-bold rounded-md bg-[#E2DFD7] dark:bg-[#2B2D3A] text-slate-700 dark:text-slate-300">
                   {item.badge}
                 </span>
               )}
@@ -131,16 +125,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
         })}
       </nav>
 
-      {/* Webhook Status Indicator Banner */}
-      <div className="p-4 m-3 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/60 dark:border-slate-800">
+      {/* Webhook Status Indicator Banner matching image bottom box */}
+      <div className="p-4 m-4 rounded-xl bg-[#F0EEE8] dark:bg-[#15161C] border border-[#E4E1D9] dark:border-[#232530]">
         <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-          <span className="text-[11px] font-semibold text-slate-700 dark:text-slate-300">
+          <span className="w-2 h-2 rounded-full bg-emerald-600 dark:bg-emerald-400 animate-pulse" />
+          <span className="text-[11px] font-bold text-[#18181B] dark:text-slate-200">
             SNS Webhook Active
           </span>
         </div>
-        <p className="text-[10px] text-slate-400 mt-1">
-          `http://localhost:8000/api` listening for contract payloads.
+        <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
+          http://localhost:8000/api listening for direct payloads.
         </p>
       </div>
     </div>
@@ -162,7 +156,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={onCloseMobile}
-              className="fixed inset-0 bg-slate-950/40 backdrop-blur-xs"
+              className="fixed inset-0 bg-black/40 backdrop-blur-xs"
             />
             <motion.aside
               initial={{ x: '-100%' }}

@@ -26,27 +26,27 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const baseClasses =
-      'inline-flex items-center justify-center font-medium rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500/50 disabled:opacity-50 disabled:pointer-events-none active:scale-[0.98] select-none';
+      'inline-flex items-center justify-center font-bold tracking-wide rounded-xl transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-[#18181B]/30 disabled:opacity-50 disabled:pointer-events-none active:scale-[0.98] select-none';
 
     const variants = {
       primary:
-        'bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-500/20 dark:bg-blue-600 dark:hover:bg-blue-500',
+        'bg-[#18181B] hover:bg-black text-white shadow-2xs dark:bg-white dark:hover:bg-slate-100 dark:text-[#18181B]',
       secondary:
-        'bg-slate-100 hover:bg-slate-200 text-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-100',
+        'bg-[#EFECE6] hover:bg-[#E7E4DC] text-[#18181B] dark:bg-[#1C1E26] dark:hover:bg-[#252833] dark:text-slate-100 border border-[#E2DFD6] dark:border-[#2A2D3C]',
       outline:
-        'border border-slate-200 dark:border-slate-800 bg-transparent hover:bg-slate-50 dark:hover:bg-slate-900 text-slate-700 dark:text-slate-300',
+        'border border-[#E2DFD6] dark:border-[#2A2D3C] bg-white dark:bg-[#16171D] hover:bg-[#FAF9F5] dark:hover:bg-[#1E202A] text-[#18181B] dark:text-slate-200 shadow-2xs',
       ghost:
-        'bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300',
+        'bg-transparent hover:bg-[#F0EEE8] dark:hover:bg-[#1C1E26] text-slate-700 dark:text-slate-300',
       destructive:
-        'bg-red-500 hover:bg-red-600 text-white shadow-md shadow-red-500/20',
+        'bg-rose-600 hover:bg-rose-700 text-white shadow-2xs',
       glass:
-        'glass-panel hover:bg-white/80 dark:hover:bg-slate-800/80 text-slate-900 dark:text-slate-100 shadow-sm border border-slate-200/60 dark:border-slate-700/60',
+        'bg-white/80 dark:bg-[#181922]/80 backdrop-blur-md hover:bg-white dark:hover:bg-[#1F212C] text-[#18181B] dark:text-slate-100 shadow-2xs border border-[#E2DFD6] dark:border-[#2A2D3C]',
     };
 
     const sizes = {
-      sm: 'text-xs px-3 py-1.5 gap-1.5',
-      md: 'text-sm px-4 py-2 gap-2',
-      lg: 'text-base px-5 py-2.5 gap-2.5',
+      sm: 'text-xs px-3.5 py-2 gap-1.5',
+      md: 'text-xs px-4 py-2.5 gap-2',
+      lg: 'text-sm px-5 py-3 gap-2.5',
       icon: 'p-2 w-9 h-9',
     };
 

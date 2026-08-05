@@ -19,8 +19,8 @@ export const Card: React.FC<CardProps> = ({
         'rounded-2xl p-6 transition-all duration-200 border',
         glass
           ? 'glass-panel'
-          : 'bg-white dark:bg-slate-900 border-slate-200/80 dark:border-slate-800 shadow-sm',
-        hoverLift && 'hover-lift cursor-pointer',
+          : 'bg-white dark:bg-[#16171D] border-[#E6E4DF] dark:border-[#252732] shadow-2xs',
+        hoverLift && 'legalos-card-hover cursor-pointer',
         className
       )}
       {...props}
@@ -46,7 +46,7 @@ export const CardTitle: React.FC<React.HTMLAttributes<HTMLHeadingElement>> = ({
   ...props
 }) => (
   <h3
-    className={clsx('text-lg font-semibold tracking-tight text-slate-900 dark:text-slate-100', className)}
+    className={clsx('text-xl font-bold font-serif tracking-tight text-[#18181B] dark:text-slate-100', className)}
     {...props}
   >
     {children}
@@ -58,7 +58,7 @@ export const CardDescription: React.FC<React.HTMLAttributes<HTMLParagraphElement
   children,
   ...props
 }) => (
-  <p className={clsx('text-sm text-slate-500 dark:text-slate-400', className)} {...props}>
+  <p className={clsx('text-xs text-slate-500 dark:text-slate-400 font-medium', className)} {...props}>
     {children}
   </p>
 );

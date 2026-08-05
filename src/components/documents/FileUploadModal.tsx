@@ -110,12 +110,12 @@ export const FileUploadModal: React.FC<FileUploadModalProps> = ({ isOpen, onClos
     >
       <div className="space-y-4">
         {/* Mode Switcher Pills */}
-        <div className="flex items-center gap-2 p-1 rounded-xl bg-slate-100 dark:bg-slate-800/80 text-xs">
+        <div className="flex items-center gap-2 p-1 rounded-xl bg-[#EFECE6] dark:bg-[#191B24] border border-[#E2DFD6] dark:border-[#2A2D3C] text-xs">
           <button
             onClick={() => setActiveMode('upload')}
-            className={`flex-1 py-1.5 px-3 rounded-lg font-semibold transition-all flex items-center justify-center gap-2 ${
+            className={`flex-1 py-2 px-3 rounded-lg font-bold transition-all flex items-center justify-center gap-2 ${
               activeMode === 'upload'
-                ? 'bg-white dark:bg-slate-900 text-blue-600 dark:text-blue-400 shadow-xs'
+                ? 'bg-white dark:bg-[#12131A] text-[#18181B] dark:text-white shadow-2xs'
                 : 'text-slate-500 hover:text-slate-900 dark:hover:text-slate-200'
             }`}
           >
@@ -124,9 +124,9 @@ export const FileUploadModal: React.FC<FileUploadModalProps> = ({ isOpen, onClos
           </button>
           <button
             onClick={() => setActiveMode('json')}
-            className={`flex-1 py-1.5 px-3 rounded-lg font-semibold transition-all flex items-center justify-center gap-2 ${
+            className={`flex-1 py-2 px-3 rounded-lg font-bold transition-all flex items-center justify-center gap-2 ${
               activeMode === 'json'
-                ? 'bg-white dark:bg-slate-900 text-blue-600 dark:text-blue-400 shadow-xs'
+                ? 'bg-white dark:bg-[#12131A] text-[#18181B] dark:text-white shadow-2xs'
                 : 'text-slate-500 hover:text-slate-900 dark:hover:text-slate-200'
             }`}
           >
@@ -149,10 +149,10 @@ export const FileUploadModal: React.FC<FileUploadModalProps> = ({ isOpen, onClos
                   onDrop={handleDrop}
                   className={`relative border-2 border-dashed rounded-2xl p-8 text-center transition-all cursor-pointer flex flex-col items-center justify-center ${
                     isDragOver
-                      ? 'border-blue-500 bg-blue-50/50 dark:bg-blue-950/40 scale-[0.99]'
+                      ? 'border-[#18181B] bg-[#EFECE6]/50 dark:bg-slate-900/60 scale-[0.99]'
                       : selectedFile
-                      ? 'border-emerald-500 bg-emerald-50/20 dark:bg-emerald-950/20'
-                      : 'border-slate-300 dark:border-slate-700 hover:border-blue-400 dark:hover:border-blue-500 bg-slate-50/50 dark:bg-slate-800/30'
+                      ? 'border-emerald-600 bg-emerald-50/30 dark:bg-emerald-950/20'
+                      : 'border-[#D6D3CC] dark:border-slate-700 hover:border-[#18181B] bg-[#FAF9F5] dark:bg-[#16171D]'
                   }`}
                 >
                   <input
@@ -162,19 +162,19 @@ export const FileUploadModal: React.FC<FileUploadModalProps> = ({ isOpen, onClos
                     className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                   />
 
-                  <div className="w-12 h-12 rounded-2xl bg-blue-100 dark:bg-blue-950 flex items-center justify-center text-blue-600 dark:text-blue-400 mb-3 shadow-xs">
+                  <div className="w-12 h-12 rounded-2xl bg-[#EFECE6] dark:bg-[#222430] flex items-center justify-center text-[#18181B] dark:text-slate-100 mb-3 shadow-2xs">
                     <Upload className="w-6 h-6" />
                   </div>
 
-                  <h4 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                  <h4 className="text-sm font-bold text-[#18181B] dark:text-slate-100">
                     {selectedFile ? selectedFile.name : 'Choose contract file or drag here'}
                   </h4>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium">
                     Supports PDF, DOCX, and TXT files up to 25MB
                   </p>
 
                   {selectedFile && (
-                    <div className="mt-3 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 text-xs font-semibold">
+                    <div className="mt-3 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-xs font-bold">
                       <CheckCircle2 className="w-3.5 h-3.5" />
                       Ready to analyze ({(selectedFile.size / (1024 * 1024)).toFixed(2)} MB)
                     </div>
@@ -185,14 +185,14 @@ export const FileUploadModal: React.FC<FileUploadModalProps> = ({ isOpen, onClos
                 <div className="flex items-center justify-end gap-3 pt-2">
                   <button
                     onClick={handleModalClose}
-                    className="px-4 py-2 text-xs font-semibold rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                    className="px-4 py-2 text-xs font-semibold rounded-xl text-slate-600 dark:text-slate-300 hover:bg-[#F0EEE8] dark:hover:bg-slate-800 transition-colors"
                   >
                     Cancel
                   </button>
                   <button
                     disabled={!selectedFile}
                     onClick={handleStartUpload}
-                    className="px-5 py-2 text-xs font-semibold rounded-xl bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white shadow-md shadow-blue-500/20 transition-all flex items-center gap-2"
+                    className="px-5 py-2.5 text-xs font-bold rounded-xl bg-[#18181B] hover:bg-black disabled:opacity-50 text-white shadow-2xs transition-all flex items-center gap-2"
                   >
                     <Cpu className="w-4 h-4" />
                     <span>Start AI Analysis</span>
@@ -208,60 +208,23 @@ export const FileUploadModal: React.FC<FileUploadModalProps> = ({ isOpen, onClos
                   <motion.div
                     animate={{ rotate: 360 }}
                     transition={{ repeat: Infinity, duration: 2, ease: 'linear' }}
-                    className="absolute inset-0 rounded-full border-4 border-blue-500/20 border-t-blue-600"
+                    className="absolute inset-0 rounded-full border-4 border-[#18181B]/20 border-t-[#18181B]"
                   />
-                  <FileText className="w-8 h-8 text-blue-600 dark:text-blue-400" />
+                  <FileText className="w-8 h-8 text-[#18181B] dark:text-slate-100" />
                 </div>
 
                 <div>
-                  <h4 className="text-base font-semibold text-slate-900 dark:text-slate-100">
+                  <h4 className="text-base font-bold text-[#18181B] dark:text-slate-100">
                     {uploadState.stage === 'scanning' && 'Running Virus & Malware Scan...'}
                     {uploadState.stage === 'parsing' && 'Extracting Contract Clauses & Parties...'}
                     {uploadState.stage === 'webhook' && 'Posting to SNS Workbench Webhook...'}
                   </h4>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium">
                     Dispatching payload & parsing AI analysis response
                   </p>
                 </div>
 
                 <Progress value={uploadState.progress} showLabel className="max-w-xs mx-auto" />
-
-                <div className="grid grid-cols-3 gap-2 max-w-sm mx-auto pt-2 text-center text-xs">
-                  <div className={`p-2 rounded-xl border ${uploadState.progress >= 25 ? 'bg-emerald-50 border-emerald-200 text-emerald-700' : 'bg-slate-50 border-slate-200 text-slate-400'}`}>
-                    <ShieldCheck className="w-4 h-4 mx-auto mb-1" />
-                    Virus Scan
-                  </div>
-                  <div className={`p-2 rounded-xl border ${uploadState.progress >= 50 ? 'bg-emerald-50 border-emerald-200 text-emerald-700' : 'bg-slate-50 border-slate-200 text-slate-400'}`}>
-                    <FileText className="w-4 h-4 mx-auto mb-1" />
-                    Parsing
-                  </div>
-                  <div className={`p-2 rounded-xl border ${uploadState.progress >= 75 ? 'bg-blue-50 border-blue-200 text-blue-700' : 'bg-slate-50 border-slate-200 text-slate-400'}`}>
-                    <Cpu className="w-4 h-4 mx-auto mb-1" />
-                    AI Webhook
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Error State */}
-            {uploadState.stage === 'error' && (
-              <div className="p-6 text-center space-y-4">
-                <div className="w-12 h-12 rounded-2xl bg-rose-100 text-rose-600 mx-auto flex items-center justify-center">
-                  <AlertCircle className="w-6 h-6" />
-                </div>
-                <h4 className="text-base font-semibold text-slate-900 dark:text-slate-100">
-                  Processing Error
-                </h4>
-                <p className="text-xs text-slate-500 max-w-sm mx-auto">
-                  {uploadState.errorMessage}
-                </p>
-                <button
-                  onClick={handleStartUpload}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 text-white text-xs font-semibold"
-                >
-                  <RefreshCw className="w-4 h-4" />
-                  Retry Upload
-                </button>
               </div>
             )}
           </>
@@ -270,7 +233,7 @@ export const FileUploadModal: React.FC<FileUploadModalProps> = ({ isOpen, onClos
         {activeMode === 'json' && (
           <div className="space-y-4">
             <div>
-              <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1">
+              <label className="text-xs font-bold text-[#18181B] dark:text-slate-200 block mb-1">
                 Contract Name / Identifier
               </label>
               <input
@@ -278,12 +241,12 @@ export const FileUploadModal: React.FC<FileUploadModalProps> = ({ isOpen, onClos
                 value={contractTitle}
                 onChange={(e) => setContractTitle(e.target.value)}
                 placeholder="e.g. Master SaaS Agreement 2026"
-                className="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF9F5] dark:bg-[#15161D] border border-[#E2DFD6] dark:border-[#2B2D3C] text-xs font-semibold text-[#18181B] dark:text-slate-100 focus:outline-none"
               />
             </div>
 
             <div>
-              <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1">
+              <label className="text-xs font-bold text-[#18181B] dark:text-slate-200 block mb-1">
                 Paste Webhook AI Response JSON / Text
               </label>
               <textarea
@@ -291,9 +254,9 @@ export const FileUploadModal: React.FC<FileUploadModalProps> = ({ isOpen, onClos
                 onChange={(e) => setPastedJsonText(e.target.value)}
                 placeholder={`Paste output from webhook response e.g.:\n{\n  "summary": "...",\n  "risk_score": "High",\n  "key_clauses": [...]\n}`}
                 rows={8}
-                className="w-full p-3 rounded-xl bg-slate-950 font-mono text-xs text-emerald-400 border border-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                className="w-full p-3 rounded-xl bg-[#121318] font-mono text-xs text-emerald-400 border border-[#2B2D3C] focus:outline-none"
               />
-              <p className="text-[11px] text-slate-500 mt-1">
+              <p className="text-[11px] text-slate-500 mt-1 font-medium">
                 Supports raw JSON objects, array formats, markdown codeblocks (` ```json `), or plain AI text.
               </p>
             </div>
@@ -301,14 +264,14 @@ export const FileUploadModal: React.FC<FileUploadModalProps> = ({ isOpen, onClos
             <div className="flex items-center justify-end gap-3 pt-2">
               <button
                 onClick={handleModalClose}
-                className="px-4 py-2 text-xs font-semibold rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                className="px-4 py-2 text-xs font-semibold rounded-xl text-slate-600 dark:text-slate-300 hover:bg-[#F0EEE8] dark:hover:bg-slate-800 transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={handleImportJson}
                 disabled={!pastedJsonText.trim()}
-                className="px-5 py-2 text-xs font-semibold rounded-xl bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white shadow-md shadow-blue-500/20 transition-all flex items-center gap-2"
+                className="px-5 py-2.5 text-xs font-bold rounded-xl bg-[#18181B] hover:bg-black disabled:opacity-50 text-white shadow-2xs transition-all flex items-center gap-2"
               >
                 <Terminal className="w-4 h-4" />
                 <span>Parse JSON & Generate Report</span>

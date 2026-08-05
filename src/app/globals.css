@@ -2,87 +2,97 @@
 
 @layer base {
   :root {
-    --background: 216 33% 98%; /* #F8FAFC */
-    --foreground: 222 47% 11%; /* #0F172A */
+    --font-serif: var(--font-serif), "Playfair Display", Georgia, serif;
+    --font-sans: var(--font-sans), "Plus Jakarta Sans", system-ui, sans-serif;
+    --font-mono: var(--font-mono), "JetBrains Mono", monospace;
+
+    --background: 40 20% 97%; /* #FAF9F5 warm ivory */
+    --foreground: 0 0% 10%; /* #1A1A1A */
     --card: 0 0% 100%; /* #FFFFFF */
-    --card-foreground: 222 47% 11%;
+    --card-foreground: 0 0% 10%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-    --primary: 221 83% 53%; /* #2563EB */
-    --primary-foreground: 210 40% 98%;
-    --secondary: 214 32% 91%; /* #E2E8F0 */
-    --secondary-foreground: 222 47% 11%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 214.3 31.8% 91.4%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
-    --radius: 0.75rem;
+    --popover-foreground: 0 0% 10%;
+    --primary: 0 0% 9%; /* #18181B dark charcoal */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 40 10% 94%; /* #F0EEE8 */
+    --secondary-foreground: 0 0% 10%;
+    --muted: 40 10% 94%;
+    --muted-foreground: 0 0% 45%;
+    --accent: 40 10% 92%;
+    --accent-foreground: 0 0% 10%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 40 8% 90%; /* #E6E4DF */
+    --input: 40 8% 90%;
+    --ring: 0 0% 15%;
+    --radius: 1rem;
   }
 
   .dark {
-    --background: 224 71% 4%; /* #030712 */
-    --foreground: 210 40% 98%;
-    --card: 222 47% 7%; /* #0F172A */
-    --card-foreground: 210 40% 98%;
-    --popover: 222 47% 7%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 217 91% 60%; /* #3B82F6 */
-    --primary-foreground: 222 47% 11%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 224.3 76.3% 48%;
+    --background: 230 15% 7%; /* #0E0F13 */
+    --foreground: 0 0% 96%;
+    --card: 230 14% 10%; /* #16171D */
+    --card-foreground: 0 0% 96%;
+    --popover: 230 14% 10%;
+    --popover-foreground: 0 0% 96%;
+    --primary: 0 0% 98%; /* #FAFAFA */
+    --primary-foreground: 0 0% 9%;
+    --secondary: 230 12% 14%;
+    --secondary-foreground: 0 0% 96%;
+    --muted: 230 12% 14%;
+    --muted-foreground: 0 0% 65%;
+    --accent: 230 12% 16%;
+    --accent-foreground: 0 0% 96%;
+    --destructive: 0 62% 40%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 230 12% 18%; /* #252732 */
+    --input: 230 12% 18%;
+    --ring: 0 0% 85%;
   }
 }
 
 body {
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
-  font-feature-settings: "rlvr" 1, "cv02" 1, "cv03" 1, "cv04" 1;
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Glassmorphism utilities */
-.glass-panel {
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(226, 232, 240, 0.8);
+/* Serif font utility class */
+.font-serif {
+  font-family: var(--font-serif);
 }
 
-.dark .glass-panel {
-  background: rgba(15, 23, 42, 0.75);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(51, 65, 85, 0.5);
+/* Warm cards & borders matching screenshot */
+.legalos-card {
+  background-color: #ffffff;
+  border: 1px solid #E6E4DF;
+  border-radius: 1.25rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.02);
+  transition: all 0.2s ease-in-out;
 }
 
-/* Modern subtle glow & hover */
-.hover-lift {
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+.dark .legalos-card {
+  background-color: #16171D;
+  border-color: #252732;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2);
 }
 
-.hover-lift:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.1), 0 8px 10px -6px rgba(37, 99, 235, 0.05);
+.legalos-card-hover:hover {
+  border-color: #D6D3CC;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.04);
 }
 
-/* Scrollbar styling */
+.dark .legalos-card-hover:hover {
+  border-color: #383B4B;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+}
+
+/* Custom scrollbars */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
@@ -90,23 +100,14 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(148, 163, 184, 0.3);
+  background: #E2DFD7;
   border-radius: 9999px;
 }
 
+.dark ::-webkit-scrollbar-thumb {
+  background: #2D303E;
+}
+
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(148, 163, 184, 0.5);
-}
-
-/* Custom linear gradient texts */
-.gradient-text {
-  background: linear-gradient(135deg, #1E40AF 0%, #2563EB 50%, #60A5FA 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.dark .gradient-text {
-  background: linear-gradient(135deg, #60A5FA 0%, #3B82F6 50%, #93C5FD 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  background: #C8C4B8;
 }
