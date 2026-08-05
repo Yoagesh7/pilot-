@@ -29,24 +29,24 @@
   }
 
   .dark {
-    --background: 230 15% 7%; /* #0E0F13 */
-    --foreground: 0 0% 96%;
-    --card: 230 14% 10%; /* #16171D */
-    --card-foreground: 0 0% 96%;
-    --popover: 230 14% 10%;
-    --popover-foreground: 0 0% 96%;
+    --background: 0 0% 4%; /* #0A0A0A pure neutral dark */
+    --foreground: 0 0% 98%; /* #FAFAFA */
+    --card: 0 0% 8%; /* #141414 neutral dark card */
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 98%;
     --primary: 0 0% 98%; /* #FAFAFA */
     --primary-foreground: 0 0% 9%;
-    --secondary: 230 12% 14%;
-    --secondary-foreground: 0 0% 96%;
-    --muted: 230 12% 14%;
-    --muted-foreground: 0 0% 65%;
-    --accent: 230 12% 16%;
-    --accent-foreground: 0 0% 96%;
+    --secondary: 0 0% 12%; /* #1F1F1F */
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 64%;
+    --accent: 0 0% 14%;
+    --accent-foreground: 0 0% 98%;
     --destructive: 0 62% 40%;
     --destructive-foreground: 0 0% 100%;
-    --border: 230 12% 18%; /* #252732 */
-    --input: 230 12% 18%;
+    --border: 0 0% 16%; /* #27272A neutral border */
+    --input: 0 0% 16%;
     --ring: 0 0% 85%;
   }
 }
@@ -64,7 +64,7 @@ body {
   font-family: var(--font-serif);
 }
 
-/* Warm cards & borders matching screenshot */
+/* Neutral cards & borders matching clean black & ivory theme */
 .legalos-card {
   background-color: #ffffff;
   border: 1px solid #E6E4DF;
@@ -74,9 +74,9 @@ body {
 }
 
 .dark .legalos-card {
-  background-color: #16171D;
-  border-color: #252732;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2);
+  background-color: #141414;
+  border-color: #27272A;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
 }
 
 .legalos-card-hover:hover {
@@ -85,8 +85,8 @@ body {
 }
 
 .dark .legalos-card-hover:hover {
-  border-color: #383B4B;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+  border-color: #3F3F46;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
 }
 
 /* Custom scrollbars */
@@ -105,9 +105,13 @@ body {
 }
 
 .dark ::-webkit-scrollbar-thumb {
-  background: #2D303E;
+  background: #27272A;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: #C8C4B8;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #3F3F46;
 }

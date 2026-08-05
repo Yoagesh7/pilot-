@@ -47,8 +47,8 @@ export default function SearchPage() {
 
   return (
     <div className="space-y-6">
-      {/* Search Header Banner matching screenshot theme */}
-      <Card className="p-8 bg-[#18181B] dark:bg-[#16171D] text-white border-[#18181B] dark:border-[#252732] space-y-4">
+      {/* Search Header Banner */}
+      <Card className="p-8 bg-[#18181B] dark:bg-[#141414] text-white border-[#18181B] dark:border-[#27272A] space-y-4">
         <div className="max-w-2xl space-y-2">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-white/10 text-[10px] font-bold tracking-widest uppercase text-slate-200">
             <Sparkles className="w-3.5 h-3.5" />
@@ -90,7 +90,7 @@ export default function SearchPage() {
 
       {documents.length === 0 ? (
         <Card className="p-12 text-center space-y-4 max-w-2xl mx-auto border-dashed border-2 border-[#D6D3CC]">
-          <div className="w-16 h-16 rounded-2xl bg-[#EFECE6] dark:bg-[#20222B] text-[#18181B] dark:text-slate-200 mx-auto flex items-center justify-center">
+          <div className="w-16 h-16 rounded-2xl bg-[#EFECE6] dark:bg-[#1C1C1C] text-[#18181B] dark:text-slate-200 mx-auto flex items-center justify-center">
             <Search className="w-8 h-8" />
           </div>
           <div>
@@ -112,7 +112,7 @@ export default function SearchPage() {
       ) : (
         <>
           {/* Filter Bar */}
-          <div className="flex items-center justify-between p-4 rounded-2xl bg-white dark:bg-[#16171D] border border-[#E6E4DF] dark:border-[#252732] shadow-2xs">
+          <div className="flex items-center justify-between p-4 rounded-2xl bg-white dark:bg-[#141414] border border-[#E6E4DF] dark:border-[#27272A] shadow-2xs">
             <div className="flex items-center gap-2">
               <span className="text-xs text-slate-400 font-bold flex items-center gap-1">
                 <Filter className="w-3.5 h-3.5" /> Filter by Risk Level:
@@ -124,7 +124,7 @@ export default function SearchPage() {
                   className={`px-3 py-1 rounded-xl text-xs font-bold transition-colors ${
                     riskFilter === r
                       ? 'bg-[#18181B] text-white dark:bg-white dark:text-[#18181B]'
-                      : 'bg-[#EFECE6] dark:bg-[#20222B] text-slate-600 dark:text-slate-300'
+                      : 'bg-[#EFECE6] dark:bg-[#1C1C1C] text-slate-600 dark:text-slate-300'
                   }`}
                 >
                   {r}
@@ -146,9 +146,9 @@ export default function SearchPage() {
             ) : (
               results.map((res) => (
                 <Card key={res.id} hoverLift className="space-y-3 p-5">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#E6E4DF] dark:border-[#252732] pb-3">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#E6E4DF] dark:border-[#27272A] pb-3">
                     <div className="flex items-center gap-2.5">
-                      <div className="p-2 rounded-xl bg-[#EFECE6] dark:bg-[#20222B] text-[#18181B] dark:text-slate-200">
+                      <div className="p-2 rounded-xl bg-[#EFECE6] dark:bg-[#1C1C1C] text-[#18181B] dark:text-slate-200">
                         <FileText className="w-5 h-5" />
                       </div>
                       <div>
@@ -160,7 +160,7 @@ export default function SearchPage() {
                     </div>
 
                     <div className="flex items-center gap-3">
-                      <span className="text-[10px] font-bold text-[#18181B] dark:text-slate-200 bg-[#EFECE6] dark:bg-[#20222B] px-2.5 py-1 rounded-md border border-[#E2DFD6] dark:border-[#2A2D3C]">
+                      <span className="text-[10px] font-bold text-[#18181B] dark:text-slate-200 bg-[#EFECE6] dark:bg-[#1C1C1C] px-2.5 py-1 rounded-md border border-[#E2DFD6] dark:border-[#27272A]">
                         {res.confidenceScore}% AI Match Score
                       </span>
                       <Badge riskLevel={res.riskLevel} />
@@ -168,7 +168,7 @@ export default function SearchPage() {
                   </div>
 
                   {/* Snippet with term highlights */}
-                  <div className="p-3.5 rounded-xl bg-[#FAF9F5] dark:bg-[#121318] font-mono text-xs text-slate-700 dark:text-slate-300 leading-relaxed border border-[#E6E4DF] dark:border-[#252732]">
+                  <div className="p-3.5 rounded-xl bg-[#FAF9F5] dark:bg-[#0A0A0A] font-mono text-xs text-slate-700 dark:text-slate-300 leading-relaxed border border-[#E6E4DF] dark:border-[#27272A]">
                     &quot;{res.snippet}&quot;
                   </div>
 
@@ -176,7 +176,7 @@ export default function SearchPage() {
                     <div className="flex items-center gap-1.5 flex-wrap">
                       <span className="text-[10px] font-bold text-slate-400 uppercase">Matched Terms:</span>
                       {res.matchedTerms.map((t) => (
-                        <span key={t} className="px-2 py-0.5 text-[10px] font-bold rounded-md bg-[#EFECE6] dark:bg-[#20222C] text-[#18181B] dark:text-slate-200">
+                        <span key={t} className="px-2 py-0.5 text-[10px] font-bold rounded-md bg-[#EFECE6] dark:bg-[#1C1C1C] text-[#18181B] dark:text-slate-200">
                           {t}
                         </span>
                       ))}

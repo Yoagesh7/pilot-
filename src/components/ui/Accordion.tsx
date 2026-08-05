@@ -28,14 +28,14 @@ export const Accordion: React.FC<AccordionProps> = ({
   };
 
   return (
-    <div className={clsx('divide-y divide-slate-100 dark:divide-slate-800 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden', className)}>
+    <div className={clsx('divide-y divide-[#E6E4DF] dark:divide-[#27272A] rounded-2xl border border-[#E6E4DF] dark:border-[#27272A] bg-white dark:bg-[#141414] overflow-hidden', className)}>
       {items.map((item) => {
         const isOpen = openId === item.id;
         return (
           <div key={item.id} className="transition-colors">
             <button
               onClick={() => toggle(item.id)}
-              className="w-full flex items-center justify-between p-4 sm:p-5 text-left font-medium text-slate-900 dark:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-850 transition-colors"
+              className="w-full flex items-center justify-between p-4 sm:p-5 text-left font-medium text-[#18181B] dark:text-slate-100 hover:bg-[#FAF9F5] dark:hover:bg-[#1C1C1C] transition-colors"
             >
               <div className="flex items-center gap-3 pr-4">
                 {item.title}
@@ -44,7 +44,7 @@ export const Accordion: React.FC<AccordionProps> = ({
               <ChevronDown
                 className={clsx(
                   'w-4 h-4 text-slate-400 transition-transform duration-200 shrink-0',
-                  isOpen && 'rotate-180 text-blue-600'
+                  isOpen && 'rotate-180 text-[#18181B] dark:text-white'
                 )}
               />
             </button>
@@ -55,9 +55,9 @@ export const Accordion: React.FC<AccordionProps> = ({
                   animate={{ height: 'auto', opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
                   transition={{ duration: 0.2 }}
-                  className="overflow-hidden bg-slate-50/50 dark:bg-slate-900/50"
+                  className="overflow-hidden bg-[#FAF9F5] dark:bg-[#1A1A1A]"
                 >
-                  <div className="p-4 sm:p-5 text-sm text-slate-600 dark:text-slate-300 border-t border-slate-100 dark:border-slate-800/60">
+                  <div className="p-4 sm:p-5 text-sm text-slate-600 dark:text-slate-300 border-t border-[#E6E4DF] dark:border-[#27272A]">
                     {item.content}
                   </div>
                 </motion.div>

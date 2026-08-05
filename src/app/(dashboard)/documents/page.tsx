@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/Badge';
 import { DataTable, Column } from '@/components/ui/DataTable';
 import { useDocStore } from '@/stores/docStore';
 import { Document, RiskLevel } from '@/types';
-import { FileText, Search, Plus, Filter, Trash2, Eye, Upload } from 'lucide-react';
+import { FileText, Search, Filter, Trash2, Eye, Upload } from 'lucide-react';
 import Link from 'next/link';
 import { FileUploadModal } from '@/components/documents/FileUploadModal';
 
@@ -35,7 +35,7 @@ export default function DocumentsPage() {
       header: 'Contract Document',
       render: (doc) => (
         <div className="flex items-center gap-3">
-          <div className="p-2 rounded-xl bg-[#EFECE6] dark:bg-[#20222B] text-[#18181B] dark:text-slate-200">
+          <div className="p-2 rounded-xl bg-[#EFECE6] dark:bg-[#1C1C1C] text-[#18181B] dark:text-slate-200">
             <FileText className="w-5 h-5" />
           </div>
           <div>
@@ -122,11 +122,11 @@ export default function DocumentsPage() {
             Upload Contract PDF
           </Button>
 
-          <div className="flex p-1 bg-[#EFECE6] dark:bg-[#1C1E26] rounded-xl border border-[#E2DFD6] dark:border-[#2A2D3C]">
+          <div className="flex p-1 bg-[#EFECE6] dark:bg-[#181818] rounded-xl border border-[#E2DFD6] dark:border-[#27272A]">
             <button
               onClick={() => setViewMode('table')}
               className={`px-3 py-1 text-xs font-bold rounded-lg transition-colors ${
-                viewMode === 'table' ? 'bg-white dark:bg-[#12131A] text-[#18181B] dark:text-white shadow-2xs' : 'text-slate-500'
+                viewMode === 'table' ? 'bg-white dark:bg-[#141414] text-[#18181B] dark:text-white shadow-2xs' : 'text-slate-500'
               }`}
             >
               Table View
@@ -134,7 +134,7 @@ export default function DocumentsPage() {
             <button
               onClick={() => setViewMode('grid')}
               className={`px-3 py-1 text-xs font-bold rounded-lg transition-colors ${
-                viewMode === 'grid' ? 'bg-white dark:bg-[#12131A] text-[#18181B] dark:text-white shadow-2xs' : 'text-slate-500'
+                viewMode === 'grid' ? 'bg-white dark:bg-[#141414] text-[#18181B] dark:text-white shadow-2xs' : 'text-slate-500'
               }`}
             >
               Grid View
@@ -145,7 +145,7 @@ export default function DocumentsPage() {
 
       {documents.length === 0 ? (
         <Card className="p-12 text-center space-y-4 max-w-2xl mx-auto border-dashed border-2 border-[#D6D3CC]">
-          <div className="w-16 h-16 rounded-2xl bg-[#EFECE6] dark:bg-[#20222B] text-[#18181B] dark:text-slate-200 mx-auto flex items-center justify-center">
+          <div className="w-16 h-16 rounded-2xl bg-[#EFECE6] dark:bg-[#1C1C1C] text-[#18181B] dark:text-slate-200 mx-auto flex items-center justify-center">
             <FileText className="w-8 h-8" />
           </div>
           <div>
@@ -167,7 +167,7 @@ export default function DocumentsPage() {
       ) : (
         <>
           {/* Filter and Search Bar */}
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-white dark:bg-[#16171D] border border-[#E6E4DF] dark:border-[#252732] shadow-2xs">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-white dark:bg-[#141414] border border-[#E6E4DF] dark:border-[#27272A] shadow-2xs">
             {/* Search */}
             <div className="relative w-full md:w-80">
               <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
@@ -176,7 +176,7 @@ export default function DocumentsPage() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search documents or parties..."
-                className="w-full pl-9 pr-4 py-2 text-xs font-semibold bg-[#FAF9F5] dark:bg-[#15161D] border border-[#E2DFD6] dark:border-[#2A2D3C] rounded-xl focus:outline-none"
+                className="w-full pl-9 pr-4 py-2 text-xs font-semibold bg-[#FAF9F5] dark:bg-[#1A1A1A] border border-[#E2DFD6] dark:border-[#27272A] rounded-xl focus:outline-none"
               />
             </div>
 
@@ -192,7 +192,7 @@ export default function DocumentsPage() {
                   className={`px-3 py-1 rounded-xl text-xs font-bold transition-all ${
                     riskFilter === r
                       ? 'bg-[#18181B] text-white dark:bg-white dark:text-[#18181B] shadow-2xs'
-                      : 'bg-[#EFECE6] dark:bg-[#20222B] text-slate-600 dark:text-slate-300 hover:bg-[#E7E4DC]'
+                      : 'bg-[#EFECE6] dark:bg-[#1C1C1C] text-slate-600 dark:text-slate-300 hover:bg-[#E7E4DC]'
                   }`}
                 >
                   {r}
@@ -210,7 +210,7 @@ export default function DocumentsPage() {
                 <Card key={doc.id} hoverLift className="flex flex-col justify-between space-y-4 p-5">
                   <div className="space-y-3">
                     <div className="flex items-start justify-between">
-                      <div className="p-2.5 rounded-xl bg-[#EFECE6] dark:bg-[#20222B] text-[#18181B] dark:text-slate-200">
+                      <div className="p-2.5 rounded-xl bg-[#EFECE6] dark:bg-[#1C1C1C] text-[#18181B] dark:text-slate-200">
                         <FileText className="w-5 h-5" />
                       </div>
                       <Badge riskLevel={doc.riskScore} />
@@ -224,7 +224,7 @@ export default function DocumentsPage() {
                     </div>
                   </div>
 
-                  <div className="pt-4 border-t border-[#E6E4DF] dark:border-[#252732] flex items-center justify-between">
+                  <div className="pt-4 border-t border-[#E6E4DF] dark:border-[#27272A] flex items-center justify-between">
                     <span className="text-[11px] text-slate-400 font-bold">
                       {doc.clausesCount} Clauses • {doc.obligationsCount} Obligations
                     </span>

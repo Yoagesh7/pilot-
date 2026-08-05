@@ -11,7 +11,7 @@ export const RiskDistributionChart: React.FC = () => {
   return (
     <div className="space-y-6 pt-2">
       {/* Segmented dark bar matching screenshot */}
-      <div className="flex h-3.5 w-full overflow-hidden rounded-full bg-[#EAE8E1] dark:bg-[#20222B] p-0.5 gap-1">
+      <div className="flex h-3.5 w-full overflow-hidden rounded-full bg-[#EAE8E1] dark:bg-[#1A1A1A] p-0.5 gap-1">
         {data.map((item, i) => (
           <motion.div
             key={item.label}
@@ -25,12 +25,12 @@ export const RiskDistributionChart: React.FC = () => {
         ))}
       </div>
 
-      {/* 3 Metric Cards matching screenshot */}
+      {/* 3 Metric Cards */}
       <div className="grid grid-cols-3 gap-3">
         {data.map((item) => (
           <div
             key={item.label}
-            className="flex flex-col items-center justify-center p-3.5 rounded-xl bg-[#F4F2EC] dark:bg-[#1A1C24] border border-[#E4E1D8] dark:border-[#272936]"
+            className="flex flex-col items-center justify-center p-3.5 rounded-xl bg-[#F4F2EC] dark:bg-[#1A1A1A] border border-[#E4E1D8] dark:border-[#27272A]"
           >
             <span className="flex items-center gap-1.5 text-[11px] font-bold text-slate-700 dark:text-slate-300">
               <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: item.color }} />

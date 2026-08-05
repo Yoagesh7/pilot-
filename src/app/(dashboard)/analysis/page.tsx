@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useDocStore } from '@/stores/docStore';
-import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/Card';
+import { Card, CardTitle, CardDescription } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { Tabs } from '@/components/ui/Tabs';
@@ -42,7 +42,7 @@ export default function AnalysisPage() {
         </div>
 
         <Card className="p-12 text-center space-y-4 max-w-2xl mx-auto border-dashed border-2 border-[#D6D3CC]">
-          <div className="w-16 h-16 rounded-2xl bg-[#EFECE6] dark:bg-[#20222B] text-[#18181B] dark:text-slate-200 mx-auto flex items-center justify-center">
+          <div className="w-16 h-16 rounded-2xl bg-[#EFECE6] dark:bg-[#1C1C1C] text-[#18181B] dark:text-slate-200 mx-auto flex items-center justify-center">
             <Upload className="w-8 h-8" />
           </div>
           <div>
@@ -87,7 +87,7 @@ export default function AnalysisPage() {
             <select
               value={selectedDoc.id}
               onChange={(e) => selectDocument(e.target.value)}
-              className="px-3.5 py-2 rounded-xl bg-white dark:bg-[#16171D] border border-[#E6E4DF] dark:border-[#252732] text-xs font-bold text-[#18181B] dark:text-slate-100 focus:outline-none shadow-2xs"
+              className="px-3.5 py-2 rounded-xl bg-white dark:bg-[#141414] border border-[#E6E4DF] dark:border-[#27272A] text-xs font-bold text-[#18181B] dark:text-slate-100 focus:outline-none shadow-2xs"
             >
               {documents.map((d) => (
                 <option key={d.id} value={d.id}>
@@ -115,7 +115,7 @@ export default function AnalysisPage() {
           </h3>
           <span className="text-[10px] text-slate-400 font-mono">ID: {selectedDoc.id}</span>
         </div>
-        <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed bg-[#FAF9F5] dark:bg-[#181920] p-4 rounded-xl border border-[#E6E4DF] dark:border-[#252732] font-medium">
+        <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed bg-[#FAF9F5] dark:bg-[#1A1A1A] p-4 rounded-xl border border-[#E6E4DF] dark:border-[#27272A] font-medium">
           {analysis.summary}
         </p>
       </Card>
@@ -181,7 +181,7 @@ export default function AnalysisPage() {
                 <Card key={c.id} className="space-y-3 p-5">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <span className="px-2 py-0.5 rounded-md bg-[#EFECE6] dark:bg-[#20222C] text-[#18181B] dark:text-slate-200 text-[10px] font-bold">
+                      <span className="px-2 py-0.5 rounded-md bg-[#EFECE6] dark:bg-[#1C1C1C] text-[#18181B] dark:text-slate-200 text-[10px] font-bold">
                         {c.section}
                       </span>
                       <h4 className="text-sm font-bold text-[#18181B] dark:text-slate-100">{c.title}</h4>
@@ -189,7 +189,7 @@ export default function AnalysisPage() {
                     <Badge riskLevel={c.riskLevel} size="sm" />
                   </div>
 
-                  <div className="p-3.5 rounded-xl bg-[#FAF9F5] dark:bg-[#121318] font-mono text-xs text-slate-700 dark:text-slate-300 leading-relaxed border border-[#E6E4DF] dark:border-[#252732]">
+                  <div className="p-3.5 rounded-xl bg-[#FAF9F5] dark:bg-[#0A0A0A] font-mono text-xs text-slate-700 dark:text-slate-300 leading-relaxed border border-[#E6E4DF] dark:border-[#27272A]">
                     &quot;{c.content}&quot;
                   </div>
 
@@ -198,7 +198,7 @@ export default function AnalysisPage() {
                   </p>
 
                   {c.recommendation && (
-                    <div className="p-3.5 rounded-xl bg-[#F4F2EC] dark:bg-[#1A1C25] border border-[#E2DFD6] dark:border-[#272936] text-xs text-slate-800 dark:text-slate-200 font-medium">
+                    <div className="p-3.5 rounded-xl bg-[#F4F2EC] dark:bg-[#1A1A1A] border border-[#E2DFD6] dark:border-[#27272A] text-xs text-slate-800 dark:text-slate-200 font-medium">
                       <strong className="text-[#18181B] dark:text-slate-100 block mb-1">Recommended Redline:</strong>
                       {c.recommendation}
                     </div>
@@ -223,7 +223,7 @@ export default function AnalysisPage() {
                   <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">{rec.category}</span>
                   <h4 className="text-xs font-bold text-[#18181B] dark:text-slate-100">{rec.title}</h4>
                   <p className="text-xs text-slate-500 font-medium">{rec.description}</p>
-                  <div className="pt-2 border-t border-[#E6E4DF] dark:border-[#252732] text-xs text-[#18181B] dark:text-slate-200 font-semibold">
+                  <div className="pt-2 border-t border-[#E6E4DF] dark:border-[#27272A] text-xs text-[#18181B] dark:text-slate-200 font-semibold">
                     👉 {rec.actionItem}
                   </div>
                 </Card>
@@ -249,7 +249,7 @@ export default function AnalysisPage() {
                   </div>
                   <Badge riskLevel={m.severity} />
                 </div>
-                <div className="mt-3 p-3.5 rounded-xl bg-[#FAF9F5] dark:bg-[#121318] border border-[#E6E4DF] dark:border-[#252732] text-xs">
+                <div className="mt-3 p-3.5 rounded-xl bg-[#FAF9F5] dark:bg-[#0A0A0A] border border-[#E6E4DF] dark:border-[#27272A] text-xs">
                   <span className="font-bold text-[#18181B] dark:text-slate-200 block mb-1">Suggested Addition Clause:</span>
                   <span className="font-mono text-slate-700 dark:text-slate-300">&quot;{m.suggestedAddition}&quot;</span>
                 </div>
@@ -265,9 +265,9 @@ export default function AnalysisPage() {
             <p className="text-xs text-slate-500 py-4 text-center font-medium">No explicit party obligations extracted.</p>
           ) : (
             analysis.obligations.map((ob) => (
-              <div key={ob.id} className="flex items-center justify-between p-3.5 rounded-xl bg-[#FAF9F5] dark:bg-[#14151B] border border-[#E6E4DF] dark:border-[#252732]">
+              <div key={ob.id} className="flex items-center justify-between p-3.5 rounded-xl bg-[#FAF9F5] dark:bg-[#1A1A1A] border border-[#E6E4DF] dark:border-[#27272A]">
                 <div>
-                  <span className="text-[10px] font-bold uppercase text-slate-700 dark:text-slate-300 bg-[#EFECE6] dark:bg-[#20222B] px-2 py-0.5 rounded-md">{ob.party}</span>
+                  <span className="text-[10px] font-bold uppercase text-slate-700 dark:text-slate-300 bg-[#EFECE6] dark:bg-[#1C1C1C] px-2 py-0.5 rounded-md">{ob.party}</span>
                   <p className="text-xs font-bold text-[#18181B] dark:text-slate-100 mt-1.5">{ob.description}</p>
                 </div>
                 <div className="text-right">
@@ -294,7 +294,7 @@ export default function AnalysisPage() {
             </Button>
           </div>
 
-          <pre className="p-4 rounded-2xl bg-[#121318] text-emerald-400 text-xs font-mono overflow-x-auto max-h-96 border border-[#2B2D3C]">
+          <pre className="p-4 rounded-2xl bg-[#0A0A0A] text-emerald-400 text-xs font-mono overflow-x-auto max-h-96 border border-[#27272A]">
             {JSON.stringify(analysis.rawBackendJson || analysis, null, 2)}
           </pre>
         </Card>

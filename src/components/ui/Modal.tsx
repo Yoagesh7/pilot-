@@ -52,7 +52,7 @@ export const Modal: React.FC<ModalProps> = ({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-slate-950/40 backdrop-blur-sm"
+            className="fixed inset-0 bg-black/60 backdrop-blur-xs"
           />
 
           {/* Modal Card */}
@@ -62,28 +62,28 @@ export const Modal: React.FC<ModalProps> = ({
             exit={{ opacity: 0, scale: 0.95, y: 10 }}
             transition={{ type: 'spring', duration: 0.3 }}
             className={clsx(
-              'relative w-full rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl z-10 overflow-hidden',
+              'relative w-full rounded-2xl bg-white dark:bg-[#141414] border border-[#E6E4DF] dark:border-[#27272A] shadow-2xl z-10 overflow-hidden',
               widths[maxWidth]
             )}
           >
             {/* Header */}
             {(title || description) && (
-              <div className="flex items-start justify-between p-6 border-b border-slate-100 dark:border-slate-800">
+              <div className="flex items-start justify-between p-6 border-b border-[#E6E4DF] dark:border-[#27272A]">
                 <div>
                   {title && (
-                    <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">
+                    <h2 className="text-xl font-bold font-serif text-[#18181B] dark:text-slate-100">
                       {title}
                     </h2>
                   )}
                   {description && (
-                    <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium">
                       {description}
                     </p>
                   )}
                 </div>
                 <button
                   onClick={onClose}
-                  className="p-2 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                  className="p-2 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-[#FAF9F5] dark:hover:bg-[#1C1C1C] transition-colors"
                 >
                   <X className="w-5 h-5" />
                 </button>

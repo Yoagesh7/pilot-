@@ -110,12 +110,12 @@ export const FileUploadModal: React.FC<FileUploadModalProps> = ({ isOpen, onClos
     >
       <div className="space-y-4">
         {/* Mode Switcher Pills */}
-        <div className="flex items-center gap-2 p-1 rounded-xl bg-[#EFECE6] dark:bg-[#191B24] border border-[#E2DFD6] dark:border-[#2A2D3C] text-xs">
+        <div className="flex items-center gap-2 p-1 rounded-xl bg-[#EFECE6] dark:bg-[#181818] border border-[#E2DFD6] dark:border-[#27272A] text-xs">
           <button
             onClick={() => setActiveMode('upload')}
             className={`flex-1 py-2 px-3 rounded-lg font-bold transition-all flex items-center justify-center gap-2 ${
               activeMode === 'upload'
-                ? 'bg-white dark:bg-[#12131A] text-[#18181B] dark:text-white shadow-2xs'
+                ? 'bg-white dark:bg-[#141414] text-[#18181B] dark:text-white shadow-2xs'
                 : 'text-slate-500 hover:text-slate-900 dark:hover:text-slate-200'
             }`}
           >
@@ -126,7 +126,7 @@ export const FileUploadModal: React.FC<FileUploadModalProps> = ({ isOpen, onClos
             onClick={() => setActiveMode('json')}
             className={`flex-1 py-2 px-3 rounded-lg font-bold transition-all flex items-center justify-center gap-2 ${
               activeMode === 'json'
-                ? 'bg-white dark:bg-[#12131A] text-[#18181B] dark:text-white shadow-2xs'
+                ? 'bg-white dark:bg-[#141414] text-[#18181B] dark:text-white shadow-2xs'
                 : 'text-slate-500 hover:text-slate-900 dark:hover:text-slate-200'
             }`}
           >
@@ -152,7 +152,7 @@ export const FileUploadModal: React.FC<FileUploadModalProps> = ({ isOpen, onClos
                       ? 'border-[#18181B] bg-[#EFECE6]/50 dark:bg-slate-900/60 scale-[0.99]'
                       : selectedFile
                       ? 'border-emerald-600 bg-emerald-50/30 dark:bg-emerald-950/20'
-                      : 'border-[#D6D3CC] dark:border-slate-700 hover:border-[#18181B] bg-[#FAF9F5] dark:bg-[#16171D]'
+                      : 'border-[#D6D3CC] dark:border-slate-700 hover:border-[#18181B] bg-[#FAF9F5] dark:bg-[#141414]'
                   }`}
                 >
                   <input
@@ -162,7 +162,7 @@ export const FileUploadModal: React.FC<FileUploadModalProps> = ({ isOpen, onClos
                     className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                   />
 
-                  <div className="w-12 h-12 rounded-2xl bg-[#EFECE6] dark:bg-[#222430] flex items-center justify-center text-[#18181B] dark:text-slate-100 mb-3 shadow-2xs">
+                  <div className="w-12 h-12 rounded-2xl bg-[#EFECE6] dark:bg-[#27272A] flex items-center justify-center text-[#18181B] dark:text-slate-100 mb-3 shadow-2xs">
                     <Upload className="w-6 h-6" />
                   </div>
 
@@ -192,7 +192,7 @@ export const FileUploadModal: React.FC<FileUploadModalProps> = ({ isOpen, onClos
                   <button
                     disabled={!selectedFile}
                     onClick={handleStartUpload}
-                    className="px-5 py-2.5 text-xs font-bold rounded-xl bg-[#18181B] hover:bg-black disabled:opacity-50 text-white shadow-2xs transition-all flex items-center gap-2"
+                    className="px-5 py-2.5 text-xs font-bold rounded-xl bg-[#18181B] dark:bg-white dark:text-[#18181B] hover:bg-black dark:hover:bg-slate-200 disabled:opacity-50 text-white shadow-2xs transition-all flex items-center gap-2"
                   >
                     <Cpu className="w-4 h-4" />
                     <span>Start AI Analysis</span>
@@ -208,7 +208,7 @@ export const FileUploadModal: React.FC<FileUploadModalProps> = ({ isOpen, onClos
                   <motion.div
                     animate={{ rotate: 360 }}
                     transition={{ repeat: Infinity, duration: 2, ease: 'linear' }}
-                    className="absolute inset-0 rounded-full border-4 border-[#18181B]/20 border-t-[#18181B]"
+                    className="absolute inset-0 rounded-full border-4 border-[#18181B]/20 dark:border-white/20 border-t-[#18181B] dark:border-t-white"
                   />
                   <FileText className="w-8 h-8 text-[#18181B] dark:text-slate-100" />
                 </div>
@@ -241,7 +241,7 @@ export const FileUploadModal: React.FC<FileUploadModalProps> = ({ isOpen, onClos
                 value={contractTitle}
                 onChange={(e) => setContractTitle(e.target.value)}
                 placeholder="e.g. Master SaaS Agreement 2026"
-                className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF9F5] dark:bg-[#15161D] border border-[#E2DFD6] dark:border-[#2B2D3C] text-xs font-semibold text-[#18181B] dark:text-slate-100 focus:outline-none"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF9F5] dark:bg-[#141414] border border-[#E2DFD6] dark:border-[#27272A] text-xs font-semibold text-[#18181B] dark:text-slate-100 focus:outline-none"
               />
             </div>
 
@@ -254,7 +254,7 @@ export const FileUploadModal: React.FC<FileUploadModalProps> = ({ isOpen, onClos
                 onChange={(e) => setPastedJsonText(e.target.value)}
                 placeholder={`Paste output from webhook response e.g.:\n{\n  "summary": "...",\n  "risk_score": "High",\n  "key_clauses": [...]\n}`}
                 rows={8}
-                className="w-full p-3 rounded-xl bg-[#121318] font-mono text-xs text-emerald-400 border border-[#2B2D3C] focus:outline-none"
+                className="w-full p-3 rounded-xl bg-[#0A0A0A] font-mono text-xs text-emerald-400 border border-[#27272A] focus:outline-none"
               />
               <p className="text-[11px] text-slate-500 mt-1 font-medium">
                 Supports raw JSON objects, array formats, markdown codeblocks (` ```json `), or plain AI text.
@@ -271,7 +271,7 @@ export const FileUploadModal: React.FC<FileUploadModalProps> = ({ isOpen, onClos
               <button
                 onClick={handleImportJson}
                 disabled={!pastedJsonText.trim()}
-                className="px-5 py-2.5 text-xs font-bold rounded-xl bg-[#18181B] hover:bg-black disabled:opacity-50 text-white shadow-2xs transition-all flex items-center gap-2"
+                className="px-5 py-2.5 text-xs font-bold rounded-xl bg-[#18181B] dark:bg-white dark:text-[#18181B] hover:bg-black dark:hover:bg-slate-200 disabled:opacity-50 text-white shadow-2xs transition-all flex items-center gap-2"
               >
                 <Terminal className="w-4 h-4" />
                 <span>Parse JSON & Generate Report</span>

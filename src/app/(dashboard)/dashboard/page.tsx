@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { RiskDistributionChart, MonthlyUploadChart } from '@/components/ui/Charts';
 import { useDocStore } from '@/stores/docStore';
-import { FileText, Sparkles, AlertTriangle, ShieldCheck, Upload, ArrowUpRight, ChevronRight, Eye } from 'lucide-react';
+import { FileText, Sparkles, AlertTriangle, ShieldCheck, Upload, ChevronRight, Eye } from 'lucide-react';
 import Link from 'next/link';
 import { FileUploadModal } from '@/components/documents/FileUploadModal';
 
@@ -21,11 +21,11 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      {/* Hero Card matching exact screenshot */}
-      <Card className="p-8 border-[#E6E4DF] dark:border-[#252732] bg-white dark:bg-[#16171D]">
+      {/* Hero Card */}
+      <Card className="p-8 border-[#E6E4DF] dark:border-[#27272A] bg-white dark:bg-[#141414]">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-3 max-w-2xl">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-[#EFECE6] dark:bg-[#20222C] text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-widest">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-[#EFECE6] dark:bg-[#222222] text-[11px] font-bold text-[#18181B] dark:text-slate-200 uppercase tracking-widest">
               <Sparkles className="w-3.5 h-3.5" />
               <span>AI Legal Workspace</span>
             </div>
@@ -54,12 +54,12 @@ export default function DashboardPage() {
         </div>
       </Card>
 
-      {/* 4 Analytics Cards Grid matching exact screenshot */}
+      {/* 4 Analytics Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Card 1: Total Docs */}
         <Card hoverLift className="flex flex-col justify-between p-6">
           <div className="flex items-start justify-between">
-            <div className="p-2.5 rounded-xl bg-[#F0EEE8] dark:bg-[#20222B] text-[#18181B] dark:text-slate-200">
+            <div className="p-2.5 rounded-xl bg-[#F0EEE8] dark:bg-[#222222] text-[#18181B] dark:text-slate-200">
               <FileText className="w-5 h-5" />
             </div>
             <span className="text-[10px] font-bold tracking-widest text-slate-400 uppercase">
@@ -79,7 +79,7 @@ export default function DashboardPage() {
         {/* Card 2: AI Analyses */}
         <Card hoverLift className="flex flex-col justify-between p-6">
           <div className="flex items-start justify-between">
-            <div className="p-2.5 rounded-xl bg-[#F0EEE8] dark:bg-[#20222B] text-[#18181B] dark:text-slate-200">
+            <div className="p-2.5 rounded-xl bg-[#F0EEE8] dark:bg-[#222222] text-[#18181B] dark:text-slate-200">
               <Sparkles className="w-5 h-5" />
             </div>
             <span className="text-[10px] font-bold tracking-widest text-slate-400 uppercase">
@@ -99,7 +99,7 @@ export default function DashboardPage() {
         {/* Card 3: Flagged for Review */}
         <Card hoverLift className="flex flex-col justify-between p-6">
           <div className="flex items-start justify-between">
-            <div className="p-2.5 rounded-xl bg-[#F0EEE8] dark:bg-[#20222B] text-[#18181B] dark:text-slate-200">
+            <div className="p-2.5 rounded-xl bg-[#F0EEE8] dark:bg-[#222222] text-[#18181B] dark:text-slate-200">
               <ShieldCheck className="w-5 h-5" />
             </div>
             <span className="text-[10px] font-bold tracking-widest text-slate-400 uppercase">
@@ -119,7 +119,7 @@ export default function DashboardPage() {
         {/* Card 4: High Risk Contracts */}
         <Card hoverLift className="flex flex-col justify-between p-6">
           <div className="flex items-start justify-between">
-            <div className="p-2.5 rounded-xl bg-[#F0EEE8] dark:bg-[#20222B] text-[#18181B] dark:text-slate-200">
+            <div className="p-2.5 rounded-xl bg-[#F0EEE8] dark:bg-[#222222] text-[#18181B] dark:text-slate-200">
               <AlertTriangle className="w-5 h-5" />
             </div>
             <span className="text-[10px] font-bold tracking-widest text-slate-400 uppercase">
@@ -137,7 +137,7 @@ export default function DashboardPage() {
         </Card>
       </div>
 
-      {/* Visual Charts Grid matching exact screenshot */}
+      {/* Visual Charts Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Risk Distribution Chart */}
         <Card className="p-6">
@@ -196,10 +196,10 @@ export default function DashboardPage() {
               <div
                 key={doc.id}
                 onClick={() => selectDocument(doc.id)}
-                className="flex items-center justify-between p-4 rounded-xl bg-[#FAF9F5] dark:bg-[#181A22] hover:bg-[#F2EFF7] dark:hover:bg-[#1E202B] transition-colors border border-[#E6E4DF] dark:border-[#262836] cursor-pointer"
+                className="flex items-center justify-between p-4 rounded-xl bg-[#FAF9F5] dark:bg-[#181818] hover:bg-[#F2EFF7] dark:hover:bg-[#222222] transition-colors border border-[#E6E4DF] dark:border-[#27272A] cursor-pointer"
               >
                 <div className="flex items-center gap-3.5">
-                  <div className="p-2.5 rounded-lg bg-[#EFECE6] dark:bg-[#232532] text-[#18181B] dark:text-slate-200">
+                  <div className="p-2.5 rounded-lg bg-[#EFECE6] dark:bg-[#222222] text-[#18181B] dark:text-slate-200">
                     <FileText className="w-5 h-5" />
                   </div>
                   <div>

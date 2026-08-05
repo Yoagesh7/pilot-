@@ -74,7 +74,7 @@ export default function ChatPage() {
         </div>
 
         <Card className="p-12 text-center space-y-4 max-w-2xl mx-auto border-dashed border-2 border-[#D6D3CC]">
-          <div className="w-16 h-16 rounded-2xl bg-[#EFECE6] dark:bg-[#20222B] text-[#18181B] dark:text-slate-200 mx-auto flex items-center justify-center">
+          <div className="w-16 h-16 rounded-2xl bg-[#EFECE6] dark:bg-[#1C1C1C] text-[#18181B] dark:text-slate-200 mx-auto flex items-center justify-center">
             <Bot className="w-8 h-8" />
           </div>
           <div>
@@ -114,7 +114,7 @@ export default function ChatPage() {
               setActiveDocId(e.target.value);
               selectDocument(e.target.value);
             }}
-            className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF9F5] dark:bg-[#15161D] border border-[#E2DFD6] dark:border-[#2B2D3C] text-xs font-bold text-[#18181B] dark:text-slate-100 focus:outline-none"
+            className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF9F5] dark:bg-[#1A1A1A] border border-[#E2DFD6] dark:border-[#27272A] text-xs font-bold text-[#18181B] dark:text-slate-100 focus:outline-none"
           >
             {documents.map((d) => (
               <option key={d.id} value={d.id}>
@@ -123,7 +123,7 @@ export default function ChatPage() {
             ))}
           </select>
 
-          <div className="p-3 rounded-xl bg-[#FAF9F5] dark:bg-[#16171E] border border-[#E6E4DF] dark:border-[#252732] text-xs space-y-1">
+          <div className="p-3 rounded-xl bg-[#FAF9F5] dark:bg-[#141414] border border-[#E6E4DF] dark:border-[#27272A] text-xs space-y-1">
             <div className="flex items-center gap-1.5 text-[#18181B] dark:text-slate-100 font-bold">
               <FileText className="w-4 h-4" />
               <span>{activeDoc.title}</span>
@@ -144,7 +144,7 @@ export default function ChatPage() {
                 onClick={() => {
                   setInputQuery(prompt);
                 }}
-                className="w-full text-left p-3 rounded-xl bg-[#FAF9F5] dark:bg-[#15161D] hover:bg-[#EFECE6] dark:hover:bg-[#1E202B] text-xs font-medium text-slate-700 dark:text-slate-300 transition-colors border border-[#E6E4DF] dark:border-[#252732] flex items-center justify-between group"
+                className="w-full text-left p-3 rounded-xl bg-[#FAF9F5] dark:bg-[#1A1A1A] hover:bg-[#EFECE6] dark:hover:bg-[#222222] text-xs font-medium text-slate-700 dark:text-slate-300 transition-colors border border-[#E6E4DF] dark:border-[#27272A] flex items-center justify-between group"
               >
                 <span>{prompt}</span>
                 <ChevronRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-[#18181B] dark:group-hover:text-white shrink-0 ml-2" />
@@ -155,9 +155,9 @@ export default function ChatPage() {
       </div>
 
       {/* Main Chat Workspace */}
-      <Card className="flex-1 flex flex-col h-full p-0 overflow-hidden border border-[#E6E4DF] dark:border-[#252732]">
+      <Card className="flex-1 flex flex-col h-full p-0 overflow-hidden border border-[#E6E4DF] dark:border-[#27272A]">
         {/* Chat Workspace Header */}
-        <div className="p-4 border-b border-[#E6E4DF] dark:border-[#252732] flex items-center justify-between bg-[#FAF9F5]/80 dark:bg-[#16171D]/80">
+        <div className="p-4 border-b border-[#E6E4DF] dark:border-[#27272A] flex items-center justify-between bg-[#FAF9F5]/80 dark:bg-[#141414]/80">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-[#18181B] dark:bg-white text-white dark:text-[#18181B] flex items-center justify-center shadow-2xs font-bold">
               <Bot className="w-5 h-5" />
@@ -204,21 +204,21 @@ export default function ChatPage() {
                     className={`p-4 rounded-2xl text-xs leading-relaxed font-medium ${
                       msg.role === 'user'
                         ? 'bg-[#18181B] text-white rounded-br-xs shadow-2xs'
-                        : 'bg-[#FAF9F5] dark:bg-[#16171D] text-slate-900 dark:text-slate-100 rounded-bl-xs border border-[#E6E4DF] dark:border-[#252732]'
+                        : 'bg-[#FAF9F5] dark:bg-[#141414] text-slate-900 dark:text-slate-100 rounded-bl-xs border border-[#E6E4DF] dark:border-[#27272A]'
                     }`}
                   >
                     {msg.content}
 
                     {/* Citations Pill Box */}
                     {msg.citations && msg.citations.length > 0 && (
-                      <div className="mt-3 pt-3 border-t border-[#E6E4DF] dark:border-[#252732] space-y-1.5">
+                      <div className="mt-3 pt-3 border-t border-[#E6E4DF] dark:border-[#27272A] space-y-1.5">
                         <span className="text-[10px] font-bold text-slate-600 dark:text-slate-300 uppercase tracking-widest flex items-center gap-1">
                           <Bookmark className="w-3 h-3 text-[#18181B] dark:text-white" /> Citations & Sources:
                         </span>
                         {msg.citations.map((cite, idx) => (
                           <div
                             key={idx}
-                            className="p-2 rounded-xl bg-white dark:bg-[#12131A] border border-[#E0DDD5] dark:border-[#2B2D3C] text-[11px] text-slate-700 dark:text-slate-300"
+                            className="p-2 rounded-xl bg-white dark:bg-[#1A1A1A] border border-[#E0DDD5] dark:border-[#27272A] text-[11px] text-slate-700 dark:text-slate-300"
                           >
                             <span className="font-bold text-[#18181B] dark:text-white mr-1.5">{cite.section}:</span>
                             &quot;{cite.snippet}&quot;
@@ -250,7 +250,7 @@ export default function ChatPage() {
               <div className="w-8 h-8 rounded-xl bg-[#18181B] text-white flex items-center justify-center shrink-0">
                 <Bot className="w-4 h-4" />
               </div>
-              <div className="flex gap-1 p-3 rounded-2xl bg-[#FAF9F5] dark:bg-[#16171D] border border-[#E6E4DF] dark:border-[#252732]">
+              <div className="flex gap-1 p-3 rounded-2xl bg-[#FAF9F5] dark:bg-[#141414] border border-[#E6E4DF] dark:border-[#27272A]">
                 <span className="w-2 h-2 rounded-full bg-[#18181B] dark:bg-white animate-bounce" />
                 <span className="w-2 h-2 rounded-full bg-[#18181B] dark:bg-white animate-bounce delay-100" />
                 <span className="w-2 h-2 rounded-full bg-[#18181B] dark:bg-white animate-bounce delay-200" />
@@ -262,13 +262,13 @@ export default function ChatPage() {
         </div>
 
         {/* Input Bar */}
-        <form onSubmit={handleSend} className="p-4 border-t border-[#E6E4DF] dark:border-[#252732] bg-white dark:bg-[#16171D] flex items-center gap-3">
+        <form onSubmit={handleSend} className="p-4 border-t border-[#E6E4DF] dark:border-[#27272A] bg-white dark:bg-[#141414] flex items-center gap-3">
           <input
             type="text"
             value={inputQuery}
             onChange={(e) => setInputQuery(e.target.value)}
             placeholder={`Ask anything about ${activeDoc.title}...`}
-            className="flex-1 px-4 py-2.5 rounded-xl bg-[#FAF9F5] dark:bg-[#12131A] border border-[#E2DFD6] dark:border-[#2B2D3C] text-xs font-semibold text-[#18181B] dark:text-slate-100 focus:outline-none"
+            className="flex-1 px-4 py-2.5 rounded-xl bg-[#FAF9F5] dark:bg-[#1A1A1A] border border-[#E2DFD6] dark:border-[#27272A] text-xs font-semibold text-[#18181B] dark:text-slate-100 focus:outline-none"
           />
           <Button
             type="submit"

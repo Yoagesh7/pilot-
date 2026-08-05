@@ -25,7 +25,7 @@ export const Badge: React.FC<BadgeProps> = ({
   const sizeClasses = size === 'sm' ? 'px-2 py-0.5 text-[10px]' : 'px-2.5 py-1 text-xs';
 
   const variants = {
-    default: 'bg-[#EFECE6] dark:bg-[#20222B] text-slate-800 dark:text-slate-200 border border-[#E2DFD6] dark:border-[#2A2D3C]',
+    default: 'bg-[#EFECE6] dark:bg-[#1C1C1C] text-slate-800 dark:text-slate-200 border border-[#E2DFD6] dark:border-[#27272A]',
     primary: 'bg-[#18181B] text-white dark:bg-white dark:text-[#18181B]',
     success: 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 border border-emerald-200/80 dark:border-emerald-800/60',
     warning: 'bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border border-amber-200/80 dark:border-amber-800/60',

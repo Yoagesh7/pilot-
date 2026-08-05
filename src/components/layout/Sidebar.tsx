@@ -43,11 +43,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const pathname = usePathname();
 
   const sidebarContent = (
-    <div className="flex flex-col h-full bg-[#FAF9F5] dark:bg-[#0E0F13] border-r border-[#E6E4DF] dark:border-[#22242D] transition-colors">
+    <div className="flex flex-col h-full bg-[#FAF9F5] dark:bg-[#0A0A0A] border-r border-[#E6E4DF] dark:border-[#27272A] transition-colors">
       {/* Brand Logo & Header matching image */}
       <div className="h-20 flex items-center justify-between px-6">
         <Link href="/dashboard" className="flex items-center gap-3 group">
-          <div className="flex items-center justify-center w-9 h-9 rounded-xl bg-[#18181B] text-white shadow-xs">
+          <div className="flex items-center justify-center w-9 h-9 rounded-xl bg-[#18181B] dark:bg-white text-white dark:text-[#18181B] shadow-2xs">
             <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M4 20h16" />
               <path d="M6 16l6-12 6 12" />
@@ -73,14 +73,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </button>
       </div>
 
-      {/* Quick Upload CTA - Solid Dark Pill Button from image */}
+      {/* Quick Upload CTA - Solid Dark Pill Button */}
       <div className="px-5 mb-3">
         <button
           onClick={() => {
             onOpenUploadModal();
             onCloseMobile();
           }}
-          className="w-full flex items-center justify-center gap-2.5 px-4 py-3 rounded-xl bg-[#18181B] hover:bg-black dark:bg-white dark:hover:bg-slate-100 text-white dark:text-[#18181B] text-xs font-bold tracking-wide shadow-xs active:scale-[0.98] transition-all"
+          className="w-full flex items-center justify-center gap-2.5 px-4 py-3 rounded-xl bg-[#18181B] hover:bg-black dark:bg-white dark:hover:bg-slate-100 text-white dark:text-[#18181B] text-xs font-bold tracking-wide shadow-2xs active:scale-[0.98] transition-all"
         >
           <Upload className="w-4 h-4" />
           <span>Upload Contract</span>
@@ -101,8 +101,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
               className={clsx(
                 'group relative flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all duration-150 select-none',
                 isActive
-                  ? 'bg-[#EAE8E1] dark:bg-[#1E202A] text-[#18181B] dark:text-white font-bold shadow-2xs'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-[#18181B] dark:hover:text-slate-100 hover:bg-[#F2F0EA] dark:hover:bg-[#181920]'
+                  ? 'bg-[#EAE8E1] dark:bg-[#1F1F1F] text-[#18181B] dark:text-white font-bold shadow-2xs'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-[#18181B] dark:hover:text-slate-100 hover:bg-[#F2F0EA] dark:hover:bg-[#181818]'
               )}
             >
               <Icon
@@ -116,7 +116,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <span className="flex-1">{item.name}</span>
 
               {item.badge && (
-                <span className="px-1.5 py-0.5 text-[9px] font-bold rounded-md bg-[#E2DFD7] dark:bg-[#2B2D3A] text-slate-700 dark:text-slate-300">
+                <span className="px-1.5 py-0.5 text-[9px] font-bold rounded-md bg-[#E2DFD7] dark:bg-[#27272A] text-slate-700 dark:text-slate-300">
                   {item.badge}
                 </span>
               )}
@@ -125,15 +125,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
         })}
       </nav>
 
-      {/* Webhook Status Indicator Banner matching image bottom box */}
-      <div className="p-4 m-4 rounded-xl bg-[#F0EEE8] dark:bg-[#15161C] border border-[#E4E1D9] dark:border-[#232530]">
+      {/* Webhook Status Indicator Banner */}
+      <div className="p-4 m-4 rounded-xl bg-[#F0EEE8] dark:bg-[#141414] border border-[#E4E1D9] dark:border-[#27272A]">
         <div className="flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-emerald-600 dark:bg-emerald-400 animate-pulse" />
           <span className="text-[11px] font-bold text-[#18181B] dark:text-slate-200">
             SNS Webhook Active
           </span>
         </div>
-        <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
+        <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed font-medium">
           http://localhost:8000/api listening for direct payloads.
         </p>
       </div>

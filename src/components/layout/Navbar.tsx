@@ -30,7 +30,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   ];
 
   return (
-    <header className="sticky top-0 z-30 h-16 bg-[#FAF9F5]/90 dark:bg-[#0E0F13]/90 backdrop-blur-md border-b border-[#E6E4DF] dark:border-[#22242D] px-4 sm:px-6 flex items-center justify-between transition-colors">
+    <header className="sticky top-0 z-30 h-16 bg-[#FAF9F5]/90 dark:bg-[#0A0A0A]/90 backdrop-blur-md border-b border-[#E6E4DF] dark:border-[#27272A] px-4 sm:px-6 flex items-center justify-between transition-colors">
       {/* Left section: Mobile menu toggle + Org switcher */}
       <div className="flex items-center gap-3">
         <button
@@ -43,17 +43,17 @@ export const Navbar: React.FC<NavbarProps> = ({
         <OrgSwitcher />
       </div>
 
-      {/* Middle: Command Palette Search Bar Trigger from screenshot */}
+      {/* Middle: Command Palette Search Bar Trigger */}
       <div className="hidden md:flex flex-1 max-w-lg mx-6">
         <button
           onClick={onOpenSearchModal}
-          className="w-full flex items-center justify-between px-3.5 py-2 rounded-xl bg-[#EFECE6]/80 dark:bg-[#191B24] border border-[#E2DFD7] dark:border-[#2A2C3A] text-slate-500 hover:text-[#18181B] dark:hover:text-slate-200 text-xs transition-colors shadow-2xs"
+          className="w-full flex items-center justify-between px-3.5 py-2 rounded-xl bg-[#EFECE6]/80 dark:bg-[#181818] border border-[#E2DFD7] dark:border-[#27272A] text-slate-500 hover:text-[#18181B] dark:hover:text-slate-200 text-xs transition-colors shadow-2xs"
         >
           <div className="flex items-center gap-2">
             <Search className="w-4 h-4 text-slate-400" />
             <span>Search contracts, clauses, or AI re...</span>
           </div>
-          <kbd className="px-1.5 py-0.5 text-[10px] font-mono font-semibold bg-white dark:bg-[#12131A] rounded-md border border-[#E0DDD5] dark:border-[#2F3140] text-slate-500 shadow-2xs">
+          <kbd className="px-1.5 py-0.5 text-[10px] font-mono font-semibold bg-white dark:bg-[#141414] rounded-md border border-[#E0DDD5] dark:border-[#27272A] text-slate-500 shadow-2xs">
             ⌘K
           </kbd>
         </button>
@@ -96,7 +96,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   initial={{ opacity: 0, y: 8, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 8, scale: 0.95 }}
-                  className="absolute right-0 mt-2 w-80 sm:w-96 p-2 bg-white dark:bg-[#16171D] border border-[#E6E4DF] dark:border-[#252732] rounded-2xl shadow-xl z-40"
+                  className="absolute right-0 mt-2 w-80 sm:w-96 p-2 bg-white dark:bg-[#141414] border border-[#E6E4DF] dark:border-[#27272A] rounded-2xl shadow-xl z-40"
                 >
                   <div className="flex items-center justify-between px-3 py-2 border-b border-slate-100 dark:border-slate-800">
                     <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100">Notifications</h4>
@@ -110,7 +110,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                       <div
                         key={n.id}
                         className={`p-3 text-xs flex gap-2 transition-colors ${
-                          n.unread ? 'bg-[#FAF9F5] dark:bg-[#1E202A]' : 'hover:bg-slate-50 dark:hover:bg-slate-800/50'
+                          n.unread ? 'bg-[#FAF9F5] dark:bg-[#1C1C1C]' : 'hover:bg-slate-50 dark:hover:bg-slate-800/50'
                         }`}
                       >
                         <div className="w-2 h-2 rounded-full bg-amber-500 shrink-0 mt-1" />
@@ -127,7 +127,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           </AnimatePresence>
         </div>
 
-        {/* User Profile Menu matching screenshot Sarah Jenkins */}
+        {/* User Profile Menu */}
         <div className="relative">
           <button
             onClick={() => setShowUserMenu(!showUserMenu)}
@@ -153,7 +153,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   initial={{ opacity: 0, y: 8, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 8, scale: 0.95 }}
-                  className="absolute right-0 mt-2 w-64 p-2 bg-white dark:bg-[#16171D] border border-[#E6E4DF] dark:border-[#252732] rounded-2xl shadow-xl z-40"
+                  className="absolute right-0 mt-2 w-64 p-2 bg-white dark:bg-[#141414] border border-[#E6E4DF] dark:border-[#27272A] rounded-2xl shadow-xl z-40"
                 >
                   <div className="p-3 border-b border-slate-100 dark:border-slate-800">
                     <p className="text-sm font-bold text-slate-900 dark:text-slate-100">{user?.name || 'Sarah Jenkins'}</p>

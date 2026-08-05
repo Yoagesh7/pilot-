@@ -64,7 +64,7 @@ export default function TeamAdminPage() {
       key: 'role',
       header: 'Role (RBAC)',
       render: (m) => (
-        <span className="px-2.5 py-1 text-xs font-bold rounded-md bg-[#EFECE6] dark:bg-[#20222C] text-[#18181B] dark:text-slate-200 border border-[#E2DFD6] dark:border-[#2A2D3C]">
+        <span className="px-2.5 py-1 text-xs font-bold rounded-md bg-[#EFECE6] dark:bg-[#1C1C1C] text-[#18181B] dark:text-slate-200 border border-[#E2DFD6] dark:border-[#27272A]">
           {m.role}
         </span>
       ),

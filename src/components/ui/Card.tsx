@@ -19,7 +19,7 @@ export const Card: React.FC<CardProps> = ({
         'rounded-2xl p-6 transition-all duration-200 border',
         glass
           ? 'glass-panel'
-          : 'bg-white dark:bg-[#16171D] border-[#E6E4DF] dark:border-[#252732] shadow-2xs',
+          : 'bg-white dark:bg-[#141414] border-[#E6E4DF] dark:border-[#27272A] shadow-2xs',
         hoverLift && 'legalos-card-hover cursor-pointer',
         className
       )}
