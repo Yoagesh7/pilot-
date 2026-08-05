@@ -28,6 +28,15 @@ export const documentService = {
 
     if (storageError) {
       console.error('[DocumentService] Supabase storage upload error:', storageError);
+      if (
+        storageError.message?.toLowerCase().includes('bucket not found') ||
+        (storageError as any).statusCode === '404' ||
+        (storageError as any).error === 'Bucket not found'
+      ) {
+        throw new Error(
+          "Supabase Storage bucket 'contracts' does not exist yet. Please go to your Supabase Dashboard -> Storage -> Create a new Private bucket named 'contracts', or run section 9 of supabase/schema.sql in your SQL Editor."
+        );
+      }
       throw new Error(`Failed to upload file to storage: ${storageError.message}`);
     }
 
