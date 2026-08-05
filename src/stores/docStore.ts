@@ -1,145 +1,140 @@
 import { create } from 'zustand';
 import { Document, AnalysisResult } from '@/types';
 import { INITIAL_DOCUMENTS, INITIAL_ANALYSIS_RESULTS } from '@/utils/mockData';
-import { WebhookService } from '@/services/webhookService';
-
-interface UploadState {
-  isUploading: boolean;
-  progress: number;
-  stage: 'idle' | 'scanning' | 'parsing' | 'webhook' | 'done' | 'error';
-  errorMessage?: string;
-}
+import { documentService } from '@/services/documentService';
+import { parseWebhookPayloadToAnalysis } from '@/utils/webhookParser';
 
 interface DocState {
   documents: Document[];
+  selectedDocumentId: string;
+  selectedDocument: Document | null;
   analyses: Record<string, AnalysisResult>;
-  selectedDocumentId: string | null;
-  uploadState: UploadState;
+  loading: boolean;
+  error: string | null;
 
-  // Actions
-  selectDocument: (id: string | null) => void;
-  deleteDocument: (id: string) => void;
-  uploadDocument: (file: File) => Promise<string | null>;
-  importWebhookJson: (jsonPayload: any, titleName?: string) => string;
-  resetUploadState: () => void;
-  getAnalysis: (docId: string) => AnalysisResult | undefined;
+  fetchDocuments: (userId: string) => Promise<void>;
+  selectDocument: (id: string) => void;
+  deleteDocument: (id: string, userId: string) => Promise<void>;
+  uploadDocument: (file: File, userId: string) => Promise<Document>;
+  importWebhookJson: (payload: any, title?: string) => string;
 }
 
 export const useDocStore = create<DocState>((set, get) => ({
   documents: INITIAL_DOCUMENTS,
+  selectedDocumentId: INITIAL_DOCUMENTS[0]?.id || '',
+  selectedDocument: INITIAL_DOCUMENTS[0] || null,
   analyses: INITIAL_ANALYSIS_RESULTS,
-  selectedDocumentId: null,
-  uploadState: {
-    isUploading: false,
-    progress: 0,
-    stage: 'idle',
-  },
+  loading: false,
+  error: null,
 
-  selectDocument: (id) => set({ selectedDocumentId: id }),
-
-  deleteDocument: (id) =>
-    set((state) => {
-      const nextDocs = state.documents.filter((d) => d.id !== id);
-      const nextAnalyses = { ...state.analyses };
-      delete nextAnalyses[id];
-      return {
-        documents: nextDocs,
-        analyses: nextAnalyses,
-        selectedDocumentId: state.selectedDocumentId === id ? (nextDocs[0]?.id || null) : state.selectedDocumentId,
-      };
-    }),
-
-  resetUploadState: () =>
-    set({
-      uploadState: { isUploading: false, progress: 0, stage: 'idle' },
-    }),
-
-  uploadDocument: async (file: File) => {
-    set({
-      uploadState: { isUploading: true, progress: 10, stage: 'scanning' },
-    });
-
+  fetchDocuments: async (userId: string) => {
+    if (!userId) return;
     try {
-      const { documentId, analysis } = await WebhookService.uploadAndTriggerWebhook(
-        file,
-        (stage, progress) => {
-          set({ uploadState: { isUploading: true, progress, stage } });
-        }
-      );
+      set({ loading: true, error: null });
+      const { documents, analyses } = await documentService.getDocuments(userId);
 
-      const ext = file.name.split('.').pop()?.toLowerCase();
-      const fileType: 'pdf' | 'docx' | 'txt' =
-        ext === 'docx' ? 'docx' : ext === 'txt' ? 'txt' : 'pdf';
+      const updatedDocs = documents.length > 0 ? documents : get().documents;
+      const updatedAnalyses = Object.keys(analyses).length > 0 ? analyses : get().analyses;
 
-      const newDoc: Document = {
-        id: documentId,
-        title: file.name.replace(/\.[^/.]+$/, ''),
-        fileName: file.name,
-        fileSize: file.size,
-        fileType,
-        status: 'analyzed',
-        uploadDate: new Date().toISOString(),
-        riskScore: analysis.risk_score,
-        riskNumerical: analysis.riskNumerical,
-        parties: analysis.parties.map((p) => p.name),
-        summary: analysis.summary,
-        obligationsCount: analysis.obligations.length,
-        clausesCount: analysis.key_clauses.length,
-        virusScanPassed: true,
-      };
+      const currentSelectedId = get().selectedDocumentId;
+      const activeDoc = updatedDocs.find((d) => d.id === currentSelectedId) || updatedDocs[0] || null;
 
-      set((state) => ({
-        documents: [newDoc, ...state.documents],
-        analyses: { ...state.analyses, [documentId]: analysis },
-        selectedDocumentId: documentId,
-        uploadState: { isUploading: false, progress: 100, stage: 'done' },
-      }));
-
-      return documentId;
-    } catch (err: any) {
       set({
-        uploadState: {
-          isUploading: false,
-          progress: 0,
-          stage: 'error',
-          errorMessage: err?.message || 'Failed to upload contract or contact backend endpoint.',
-        },
+        documents: updatedDocs,
+        analyses: updatedAnalyses,
+        selectedDocumentId: activeDoc?.id || '',
+        selectedDocument: activeDoc,
+        loading: false,
       });
-      return null;
+    } catch (err: any) {
+      console.warn('[DocStore] Falling back to default documents:', err?.message);
+      set({ loading: false });
     }
   },
 
-  importWebhookJson: (jsonPayload: any, titleName: string = 'Raw AI Analysis Output') => {
-    const analysis = WebhookService.parseRawPayload(jsonPayload, titleName);
-    const documentId = analysis.documentId;
+  selectDocument: (id: string) => {
+    const doc = get().documents.find((d) => d.id === id) || null;
+    set({
+      selectedDocumentId: id,
+      selectedDocument: doc,
+    });
+  },
+
+  deleteDocument: async (id: string, userId: string) => {
+    try {
+      set({ loading: true });
+      if (userId) {
+        await documentService.deleteDocument(id, userId);
+      }
+
+      const updatedDocs = get().documents.filter((d) => d.id !== id);
+      const nextActiveDoc = updatedDocs[0] || null;
+
+      set({
+        documents: updatedDocs,
+        selectedDocumentId: nextActiveDoc?.id || '',
+        selectedDocument: nextActiveDoc,
+        loading: false,
+      });
+    } catch (err: any) {
+      console.error('[DocStore] deleteDocument error:', err);
+      set({ error: err.message, loading: false });
+    }
+  },
+
+  uploadDocument: async (file: File, userId: string) => {
+    set({ loading: true, error: null });
+    try {
+      const { document, analysis } = await documentService.uploadDocument(file, userId);
+
+      const updatedDocs = [document, ...get().documents];
+      const updatedAnalyses = { ...get().analyses, [document.id]: analysis };
+
+      set({
+        documents: updatedDocs,
+        analyses: updatedAnalyses,
+        selectedDocumentId: document.id,
+        selectedDocument: document,
+        loading: false,
+      });
+
+      return document;
+    } catch (err: any) {
+      console.error('[DocStore] uploadDocument error:', err);
+      set({ loading: false, error: err.message });
+      throw err;
+    }
+  },
+
+  importWebhookJson: (payload: any, title?: string) => {
+    const docId = `imported-${Date.now()}`;
+    const analysis = parseWebhookPayloadToAnalysis(payload, title || 'Imported Webhook Contract');
+    analysis.documentId = docId;
 
     const newDoc: Document = {
-      id: documentId,
-      title: titleName,
-      fileName: `${titleName.toLowerCase().replace(/\s+/g, '_')}.json`,
-      fileSize: JSON.stringify(jsonPayload).length,
-      fileType: 'pdf',
+      id: docId,
+      title: title || 'Imported Webhook Contract',
+      fileName: 'webhook_payload.json',
+      fileSize: JSON.stringify(payload).length,
+      fileType: 'txt',
+      uploadDate: new Date().toISOString().split('T')[0],
       status: 'analyzed',
-      uploadDate: new Date().toISOString(),
       riskScore: analysis.risk_score,
       riskNumerical: analysis.riskNumerical,
-      parties: analysis.parties.map((p) => p.name),
       summary: analysis.summary,
-      obligationsCount: analysis.obligations.length,
-      clausesCount: analysis.key_clauses.length,
-      virusScanPassed: true,
+      parties: analysis.parties.map((p) => p.name),
+      obligationsCount: analysis.obligations?.length || 0,
+      clausesCount: analysis.key_clauses?.length || 0,
+      storagePath: '',
     };
 
     set((state) => ({
       documents: [newDoc, ...state.documents],
-      analyses: { ...state.analyses, [documentId]: analysis },
-      selectedDocumentId: documentId,
+      analyses: { ...state.analyses, [docId]: analysis },
+      selectedDocumentId: docId,
+      selectedDocument: newDoc,
     }));
 
-    return documentId;
-  },
-
-  getAnalysis: (docId: string) => {
-    return get().analyses[docId];
+    return docId;
   },
 }));

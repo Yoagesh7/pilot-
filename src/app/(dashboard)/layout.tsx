@@ -7,6 +7,8 @@ import { ToastProvider } from '@/components/ui/Toast';
 import { FileUploadModal } from '@/components/documents/FileUploadModal';
 import { CommandPaletteModal } from '@/components/search/CommandPaletteModal';
 import { useThemeStore } from '@/stores/themeStore';
+import { useAuthStore } from '@/stores/authStore';
+import { useDocStore } from '@/stores/docStore';
 
 export default function DashboardLayout({
   children,
@@ -17,10 +19,19 @@ export default function DashboardLayout({
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
   const [searchModalOpen, setSearchModalOpen] = useState(false);
   const { initTheme } = useThemeStore();
+  const { initAuth, user } = useAuthStore();
+  const { fetchDocuments } = useDocStore();
 
   useEffect(() => {
     initTheme();
-  }, [initTheme]);
+    initAuth();
+  }, [initTheme, initAuth]);
+
+  useEffect(() => {
+    if (user?.id) {
+      fetchDocuments(user.id);
+    }
+  }, [user?.id, fetchDocuments]);
 
   return (
     <ToastProvider>

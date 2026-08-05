@@ -11,12 +11,12 @@ import { useToast } from '@/components/ui/Toast';
 import { FileUploadModal } from '@/components/documents/FileUploadModal';
 
 export default function AnalysisPage() {
-  const { documents, selectedDocumentId, selectDocument, getAnalysis } = useDocStore();
+  const { documents, selectedDocumentId, selectDocument, analyses } = useDocStore();
   const { showToast } = useToast();
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
 
   const selectedDoc = documents.find((d) => d.id === selectedDocumentId) || documents[0];
-  const analysis = selectedDoc ? getAnalysis(selectedDoc.id) : undefined;
+  const analysis = selectedDoc ? analyses[selectedDoc.id] : undefined;
 
   const [activeTab, setActiveTab] = useState('insights');
 

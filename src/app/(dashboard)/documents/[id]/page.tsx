@@ -31,10 +31,10 @@ export default function DocumentDetailsPage() {
   const router = useRouter();
   const { showToast } = useToast();
   const docId = params?.id as string;
-  const { documents, getAnalysis } = useDocStore();
+  const { documents, analyses } = useDocStore();
 
   const doc = documents.find((d) => d.id === docId);
-  const analysis = docId ? getAnalysis(docId) : undefined;
+  const analysis = docId ? analyses[docId] : undefined;
 
   const [activeTab, setActiveTab] = useState('summary');
 

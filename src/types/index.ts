@@ -27,6 +27,7 @@ export interface Document {
   obligationsCount: number;
   clausesCount: number;
   virusScanPassed?: boolean;
+  storagePath?: string;
 }
 
 export interface PartyInfo {

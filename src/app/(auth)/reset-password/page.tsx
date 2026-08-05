@@ -2,27 +2,39 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Scale, Mail, ArrowLeft, CheckCircle2, AlertCircle } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { Scale, Lock, ArrowRight, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { authService } from '@/services/authService';
 import { motion } from 'framer-motion';
 
-export default function ForgotPasswordPage() {
-  const [email, setEmail] = useState('');
-  const [submitted, setSubmitted] = useState(false);
+export default function ResetPasswordPage() {
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
+
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg(null);
-    setIsLoading(true);
 
+    if (password !== confirmPassword) {
+      setErrorMsg('Passwords do not match.');
+      return;
+    }
+
+    setIsLoading(true);
     try {
-      await authService.resetPassword(email);
-      setSubmitted(true);
+      await authService.updatePassword(password);
+      setSuccess(true);
+      setTimeout(() => {
+        router.push('/login');
+      }, 2000);
     } catch (err: any) {
-      console.error('[ForgotPassword] Reset error:', err);
-      setErrorMsg(err.message || 'Failed to dispatch password recovery email.');
+      console.error('[ResetPassword] Update error:', err);
+      setErrorMsg(err.message || 'Failed to update password.');
     } finally {
       setIsLoading(false);
     }
@@ -41,10 +53,10 @@ export default function ForgotPasswordPage() {
             <Scale className="w-6 h-6" />
           </div>
           <h1 className="text-2xl font-bold font-serif tracking-tight text-[#18181B] dark:text-white">
-            Reset Password
+            Set New Password
           </h1>
           <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
-            Enter your email to receive a password recovery link
+            Enter your new secure password below
           </p>
         </div>
 
@@ -55,32 +67,43 @@ export default function ForgotPasswordPage() {
           </div>
         )}
 
-        {submitted ? (
+        {success ? (
           <div className="p-6 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900/60 text-center space-y-3">
             <CheckCircle2 className="w-10 h-10 text-emerald-600 dark:text-emerald-400 mx-auto" />
-            <h4 className="text-sm font-bold text-emerald-900 dark:text-emerald-200">Recovery Email Dispatched</h4>
+            <h4 className="text-sm font-bold text-emerald-900 dark:text-emerald-200">Password Updated!</h4>
             <p className="text-xs text-slate-600 dark:text-slate-300 font-medium">
-              We sent password reset instructions to <span className="font-bold text-[#18181B] dark:text-white">{email}</span>.
+              Redirecting you to the sign in page...
             </p>
-            <Link
-              href="/login"
-              className="inline-flex items-center gap-2 text-xs font-bold text-[#18181B] dark:text-white hover:underline pt-2"
-            >
-              <ArrowLeft className="w-4 h-4" /> Return to Sign In
-            </Link>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-slate-700 dark:text-slate-300">Work Email</label>
+              <label className="text-xs font-bold text-slate-700 dark:text-slate-300">New Password</label>
               <div className="relative">
-                <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+                <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
                 <input
-                  type="email"
+                  type="password"
                   required
-                  placeholder="s.jenkins@enterprise.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  minLength={6}
+                  placeholder="••••••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2.5 bg-[#FAF9F5] dark:bg-[#1C1C1C] border border-[#E2DFD6] dark:border-[#27272A] rounded-xl text-xs text-[#18181B] dark:text-slate-100 font-medium focus:outline-none"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold text-slate-700 dark:text-slate-300">Confirm Password</label>
+              <div className="relative">
+                <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+                <input
+                  type="password"
+                  required
+                  minLength={6}
+                  placeholder="••••••••••••"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                   className="w-full pl-10 pr-4 py-2.5 bg-[#FAF9F5] dark:bg-[#1C1C1C] border border-[#E2DFD6] dark:border-[#27272A] rounded-xl text-xs text-[#18181B] dark:text-slate-100 font-medium focus:outline-none"
                 />
               </div>
@@ -89,19 +112,12 @@ export default function ForgotPasswordPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3 rounded-xl bg-[#18181B] dark:bg-white text-white dark:text-[#18181B] hover:bg-black dark:hover:bg-slate-100 font-bold text-xs shadow-md transition-all disabled:opacity-50"
+              className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-[#18181B] dark:bg-white text-white dark:text-[#18181B] hover:bg-black dark:hover:bg-slate-100 font-bold text-xs shadow-md transition-all disabled:opacity-50"
             >
-              {isLoading ? 'Sending Link...' : 'Send Reset Instructions'}
+              <span>{isLoading ? 'Updating Password...' : 'Update Password'}</span>
+              {!isLoading && <ArrowRight className="w-4 h-4" />}
             </button>
           </form>
-        )}
-
-        {!submitted && (
-          <p className="text-center text-xs">
-            <Link href="/login" className="text-slate-500 dark:text-slate-400 hover:text-[#18181B] dark:hover:text-white inline-flex items-center gap-1.5 font-bold">
-              <ArrowLeft className="w-3.5 h-3.5" /> Back to Sign In
-            </Link>
-          </p>
         )}
       </motion.div>
     </div>

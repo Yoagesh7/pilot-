@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Modal } from '@/components/ui/Modal';
 import { useDocStore } from '@/stores/docStore';
+import { useAuthStore } from '@/stores/authStore';
 import { useToast } from '@/components/ui/Toast';
 import { Upload, FileText, CheckCircle2, ShieldCheck, Cpu, AlertCircle, RefreshCw, Terminal, Code } from 'lucide-react';
 import { Progress } from '@/components/ui/Progress';
@@ -22,8 +23,11 @@ export const FileUploadModal: React.FC<FileUploadModalProps> = ({ isOpen, onClos
   const [isDragOver, setIsDragOver] = useState(false);
   const [pastedJsonText, setPastedJsonText] = useState('');
   const [contractTitle, setContractTitle] = useState('Webhook Contract Analysis');
-  const { uploadState, uploadDocument, importWebhookJson, resetUploadState } = useDocStore();
+  const [uploadState, setUploadState] = useState({ isUploading: false, progress: 0, stage: 'parsing' as 'scanning' | 'parsing' | 'webhook' | 'done' });
+  const { uploadDocument, importWebhookJson } = useDocStore();
   const { showToast } = useToast();
+
+  const resetUploadState = () => setUploadState({ isUploading: false, progress: 0, stage: 'parsing' });
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
@@ -51,19 +55,22 @@ export const FileUploadModal: React.FC<FileUploadModalProps> = ({ isOpen, onClos
     setSelectedFile(file);
   };
 
+  const { user } = useAuthStore();
   const handleStartUpload = async () => {
     if (!selectedFile) return;
 
-    const docId = await uploadDocument(selectedFile);
-    if (docId) {
-      confetti({ particleCount: 60, spread: 70, origin: { y: 0.6 } });
-      showToast('Backend Analysis Complete', `PDF "${selectedFile.name}" processed & returned JSON output!`, 'success');
-      setTimeout(() => {
-        handleModalClose();
-        router.push(`/documents/${docId}`);
-      }, 700);
-    } else {
-      showToast('Upload Failed', 'There was an error communicating with the backend pipeline.', 'error');
+    try {
+      const doc = await uploadDocument(selectedFile, user?.id || 'authenticated-user');
+      if (doc && doc.id) {
+        confetti({ particleCount: 60, spread: 70, origin: { y: 0.6 } });
+        showToast('Backend Analysis Complete', `PDF "${selectedFile.name}" processed & returned JSON output!`, 'success');
+        setTimeout(() => {
+          handleModalClose();
+          router.push(`/documents/${doc.id}`);
+        }, 700);
+      }
+    } catch (err: any) {
+      showToast('Upload Failed', err?.message || 'There was an error communicating with the backend pipeline.', 'error');
     }
   };
 

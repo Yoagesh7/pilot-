@@ -1,74 +1,75 @@
 import { create } from 'zustand';
 import { User } from '@/types';
-import { INITIAL_USER } from '@/utils/mockData';
+import { authService } from '@/services/authService';
+import { supabase } from '@/lib/supabase';
+import { Session } from '@supabase/supabase-js';
 
 interface AuthState {
   user: User | null;
-  token: string | null;
+  session: Session | null;
   isAuthenticated: boolean;
-  activeOrganization: string;
-  setOrganization: (org: string) => void;
-  login: (email: string, pass: string) => Promise<boolean>;
-  loginOAuth: (provider: 'Google' | 'Microsoft') => Promise<boolean>;
-  register: (name: string, email: string, pass: string) => Promise<boolean>;
-  logout: () => void;
+  loading: boolean;
+  initAuth: () => Promise<void>;
+  setUser: (user: User | null) => void;
+  setSession: (session: Session | null) => void;
+  logout: () => Promise<void>;
 }
 
-export const useAuthStore = create<AuthState>((set) => ({
-  user: INITIAL_USER,
-  token: 'mock-jwt-token-legalos-2026',
-  isAuthenticated: true,
-  activeOrganization: 'Acme Global Legal Ops',
+export const useAuthStore = create<AuthState>((set, get) => ({
+  user: null,
+  session: null,
+  isAuthenticated: false,
+  loading: true,
 
-  setOrganization: (org) => set({ activeOrganization: org }),
+  initAuth: async () => {
+    try {
+      set({ loading: true });
 
-  login: async (email, _pass) => {
-    await new Promise((r) => setTimeout(r, 600)); // smooth async delay
-    const user: User = {
-      ...INITIAL_USER,
-      email,
-      name: email.split('@')[0].replace('.', ' ').toUpperCase(),
-    };
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('legalos_jwt_token', 'mock-jwt-token-legalos-2026');
+      // Get current active session
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (session) {
+        const user = await authService.getCurrentUser();
+        set({
+          session,
+          user,
+          isAuthenticated: !!user,
+          loading: false,
+        });
+
+        // Set cookie for Next.js middleware
+        document.cookie = `sb-access-token=${session.access_token}; path=/; max-age=604800; SameSite=Lax`;
+      } else {
+        set({
+          session: null,
+          user: null,
+          isAuthenticated: false,
+          loading: false,
+        });
+      }
+
+      // Listen for auth state changes
+      supabase.auth.onAuthStateChange(async (event, newSession) => {
+        if (event === 'SIGNED_IN' && newSession) {
+          const user = await authService.getCurrentUser();
+          set({ session: newSession, user, isAuthenticated: !!user, loading: false });
+          document.cookie = `sb-access-token=${newSession.access_token}; path=/; max-age=604800; SameSite=Lax`;
+        } else if (event === 'SIGNED_OUT') {
+          document.cookie = 'sb-access-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+          set({ session: null, user: null, isAuthenticated: false, loading: false });
+        }
+      });
+    } catch (err) {
+      console.error('[AuthStore] initAuth error:', err);
+      set({ loading: false });
     }
-    set({ user, isAuthenticated: true, token: 'mock-jwt-token-legalos-2026' });
-    return true;
   },
 
-  loginOAuth: async (provider) => {
-    await new Promise((r) => setTimeout(r, 800));
-    const user: User = {
-      ...INITIAL_USER,
-      name: provider === 'Google' ? 'Google Legal User' : 'Enterprise MS User',
-      email: provider === 'Google' ? 'legal.user@gmail.com' : 'legal.user@microsoft.com',
-    };
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('legalos_jwt_token', `oauth-${provider.toLowerCase()}-token`);
-    }
-    set({ user, isAuthenticated: true, token: `oauth-${provider.toLowerCase()}-token` });
-    return true;
-  },
+  setUser: (user) => set({ user, isAuthenticated: !!user }),
+  setSession: (session) => set({ session }),
 
-  register: async (name, email, _pass) => {
-    await new Promise((r) => setTimeout(r, 800));
-    const user: User = {
-      id: `usr-${Date.now()}`,
-      name,
-      email,
-      role: 'Senior Counsel',
-      organization: 'Acme Global Legal Ops',
-      createdAt: new Date().toISOString().split('T')[0],
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200'
-    };
-    set({ user, isAuthenticated: true, token: 'mock-registered-jwt-token' });
-    return true;
+  logout: async () => {
+    await authService.logout();
+    set({ user: null, session: null, isAuthenticated: false });
   },
-
-  logout: () => {
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('legalos_jwt_token');
-    }
-    set({ user: null, isAuthenticated: false, token: null });
-  }
 }));

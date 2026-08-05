@@ -1,12 +1,29 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-export const RiskDistributionChart: React.FC = () => {
-  const data = [
-    { label: 'Low Risk', count: 18, color: '#18181B', percentage: 55 },
-    { label: 'Medium Risk', count: 10, color: '#52525B', percentage: 30 },
-    { label: 'High Risk', count: 5, color: '#A1A1AA', percentage: 15 },
-  ];
+import { Document } from '@/types';
+
+interface RiskDistributionChartProps {
+  documents?: Document[];
+}
+
+export const RiskDistributionChart: React.FC<RiskDistributionChartProps> = ({ documents = [] }) => {
+  const total = documents.length || 1;
+  const lowCount = documents.filter((d) => d.riskScore === 'Low').length;
+  const medCount = documents.filter((d) => d.riskScore === 'Medium').length;
+  const highCount = documents.filter((d) => d.riskScore === 'High').length;
+
+  const data = documents.length > 0
+    ? [
+        { label: 'Low Risk', count: lowCount, color: '#18181B', percentage: Math.round((lowCount / total) * 100) },
+        { label: 'Medium Risk', count: medCount, color: '#52525B', percentage: Math.round((medCount / total) * 100) },
+        { label: 'High Risk', count: highCount, color: '#A1A1AA', percentage: Math.round((highCount / total) * 100) },
+      ]
+    : [
+        { label: 'Low Risk', count: 18, color: '#18181B', percentage: 55 },
+        { label: 'Medium Risk', count: 10, color: '#52525B', percentage: 30 },
+        { label: 'High Risk', count: 5, color: '#A1A1AA', percentage: 15 },
+      ];
 
   return (
     <div className="space-y-6 pt-2">
@@ -16,7 +33,7 @@ export const RiskDistributionChart: React.FC = () => {
           <motion.div
             key={item.label}
             initial={{ width: 0 }}
-            animate={{ width: `${item.percentage}%` }}
+            animate={{ width: `${Math.max(item.percentage, 2)}%` }}
             transition={{ duration: 0.8, delay: i * 0.1 }}
             style={{ backgroundColor: item.color }}
             className="h-full rounded-full transition-all"

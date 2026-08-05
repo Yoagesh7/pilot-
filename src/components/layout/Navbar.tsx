@@ -173,9 +173,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                       Account Settings
                     </Link>
                     <button
-                      onClick={() => {
+                      onClick={async () => {
                         setShowUserMenu(false);
-                        logout();
+                        await logout();
+                        window.location.href = '/login';
                       }}
                       className="w-full flex items-center gap-2 px-3 py-2 text-xs font-medium rounded-xl text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors text-left"
                     >

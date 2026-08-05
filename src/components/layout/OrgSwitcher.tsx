@@ -11,7 +11,10 @@ const ORGANIZATIONS = [
 
 export const OrgSwitcher: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { activeOrganization, setOrganization } = useAuthStore();
+  const [selectedOrg, setSelectedOrg] = useState('Acme Global Legal Ops');
+  const { user } = useAuthStore();
+
+  const activeOrg = user?.organization || selectedOrg;
 
   return (
     <div className="relative">
@@ -20,7 +23,7 @@ export const OrgSwitcher: React.FC = () => {
         className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#EFECE6] dark:bg-[#181818] hover:bg-[#E7E4DC] dark:hover:bg-[#222222] text-xs font-bold text-[#18181B] dark:text-slate-100 transition-colors border border-[#E0DDD5] dark:border-[#27272A] shadow-2xs"
       >
         <Building2 className="w-3.5 h-3.5 text-slate-700 dark:text-slate-300" />
-        <span className="max-w-[150px] truncate">{activeOrganization || 'Acme Global Legal Ops'}</span>
+        <span className="max-w-[150px] truncate">{activeOrg}</span>
         <ChevronDown className="w-3.5 h-3.5 text-slate-500" />
       </button>
 
@@ -38,12 +41,12 @@ export const OrgSwitcher: React.FC = () => {
                 Select Legal Workspace
               </div>
               {ORGANIZATIONS.map((org) => {
-                const isSelected = org === (activeOrganization || 'Acme Global Legal Ops');
+                const isSelected = org === activeOrg;
                 return (
                   <button
                     key={org}
                     onClick={() => {
-                      setOrganization(org);
+                      setSelectedOrg(org);
                       setIsOpen(false);
                     }}
                     className="w-full flex items-center justify-between px-3 py-2 text-xs font-semibold rounded-xl text-left text-slate-800 dark:text-slate-200 hover:bg-[#FAF9F5] dark:hover:bg-[#1F1F1F] transition-colors"

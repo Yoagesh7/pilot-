@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useDocStore } from '@/stores/docStore';
 import { useChatStore } from '@/stores/chatStore';
+import { useAuthStore } from '@/stores/authStore';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Avatar } from '@/components/ui/Avatar';
@@ -12,15 +13,25 @@ import { FileUploadModal } from '@/components/documents/FileUploadModal';
 
 export default function ChatPage() {
   const { documents, selectedDocumentId, selectDocument, analyses } = useDocStore();
-  const { messages, isTyping, activeDocId, setActiveDocId, sendMessage, clearChat } = useChatStore();
+  const { user } = useAuthStore();
+  const { messages, isTyping, activeDocId, setActiveDocId, fetchChatHistory, sendMessage, clearChat } = useChatStore();
 
   const [inputQuery, setInputQuery] = useState('');
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const activeDoc = documents.find((d) => d.id === activeDocId) || documents[0];
+  const activeDoc = documents.find((d) => d.id === (activeDocId || selectedDocumentId)) || documents[0];
   const activeAnalysis = activeDoc ? analyses[activeDoc.id] : undefined;
   const currentMessages = activeDoc ? (messages[activeDoc.id] || []) : [];
+
+  useEffect(() => {
+    if (activeDoc?.id) {
+      setActiveDocId(activeDoc.id);
+      if (user?.id) {
+        fetchChatHistory(user.id, activeDoc.id);
+      }
+    }
+  }, [activeDoc?.id, user?.id, setActiveDocId, fetchChatHistory]);
 
   const documentContext = activeDoc && activeAnalysis
     ? (activeAnalysis.ocrText && activeAnalysis.ocrText !== activeAnalysis.summary
@@ -29,10 +40,9 @@ export default function ChatPage() {
             `Contract: ${activeDoc.title}`,
             `Summary: ${activeAnalysis.summary}`,
             `Risk Score: ${activeAnalysis.risk_score} (${activeAnalysis.riskNumerical}/100)`,
-            `Parties: ${activeAnalysis.parties.map(p => `${p.name} (${p.role})`).join(', ')}`,
-            `Key Clauses:\n${activeAnalysis.key_clauses.map(c => `  - ${c.section} ${c.title}: ${c.content}`).join('\n')}`,
-            `Missing Clauses:\n${activeAnalysis.missing_clauses.map(m => `  - ${m.title}: ${m.description}`).join('\n')}`,
-            `Obligations:\n${activeAnalysis.obligations.map(o => `  - [${o.party}] ${o.description}`).join('\n')}`,
+            `Parties: ${activeAnalysis.parties ? activeAnalysis.parties.map(p => `${p.name} (${p.role})`).join(', ') : 'Party A, Party B'}`,
+            `Key Clauses:\n${activeAnalysis.key_clauses ? activeAnalysis.key_clauses.map(c => `  - ${c.section} ${c.title}: ${c.content}`).join('\n') : 'None'}`,
+            `Obligations:\n${activeAnalysis.obligations ? activeAnalysis.obligations.map(o => `  - [${o.party}] ${o.description}`).join('\n') : 'None'}`,
           ].join('\n\n')
       )
     : '';
@@ -51,7 +61,7 @@ export default function ChatPage() {
     if (!q.trim() || isTyping || !activeDoc) return;
 
     setInputQuery('');
-    await sendMessage(activeDoc.id, q, documentContext);
+    await sendMessage(activeDoc.id, q, documentContext, user?.id || 'authenticated-user');
   };
 
   const suggestedPrompts = [
@@ -113,6 +123,7 @@ export default function ChatPage() {
             onChange={(e) => {
               setActiveDocId(e.target.value);
               selectDocument(e.target.value);
+              if (user?.id) fetchChatHistory(user.id, e.target.value);
             }}
             className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF9F5] dark:bg-[#1A1A1A] border border-[#E2DFD6] dark:border-[#27272A] text-xs font-bold text-[#18181B] dark:text-slate-100 focus:outline-none"
           >
@@ -141,9 +152,7 @@ export default function ChatPage() {
             {suggestedPrompts.map((prompt, idx) => (
               <button
                 key={idx}
-                onClick={() => {
-                  setInputQuery(prompt);
-                }}
+                onClick={() => setInputQuery(prompt)}
                 className="w-full text-left p-3 rounded-xl bg-[#FAF9F5] dark:bg-[#1A1A1A] hover:bg-[#EFECE6] dark:hover:bg-[#222222] text-xs font-medium text-slate-700 dark:text-slate-300 transition-colors border border-[#E6E4DF] dark:border-[#27272A] flex items-center justify-between group"
               >
                 <span>{prompt}</span>
@@ -167,7 +176,7 @@ export default function ChatPage() {
                 LEGALOS AI Assistant
               </h3>
               <p className="text-[11px] text-slate-400 font-medium">
-                Contextually bound to <span className="font-bold text-slate-600 dark:text-slate-300">{activeDoc.fileName}</span>
+                Bound to <span className="font-bold text-slate-600 dark:text-slate-300">{activeDoc.fileName}</span> (user: {user?.email || 'Authenticated'})
               </p>
             </div>
           </div>
@@ -175,7 +184,7 @@ export default function ChatPage() {
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => clearChat(activeDoc.id)}
+            onClick={() => clearChat(activeDoc.id, user?.id || '')}
             leftIcon={<Trash2 className="w-3.5 h-3.5 text-slate-400" />}
           >
             Clear History
@@ -291,7 +300,7 @@ export default function ChatPage() {
                 </div>
 
                 {msg.role === 'user' && (
-                  <Avatar name="Sarah Jenkins" size="sm" className="mt-0.5" />
+                  <Avatar name={user?.name || 'Counsel'} src={user?.avatar} size="sm" className="mt-0.5" />
                 )}
               </motion.div>
             ))}
