@@ -47,24 +47,49 @@ export const documentService = {
     const documentTitle = file.name.replace(/\.[^/.]+$/, '');
 
     // 3. Insert document metadata into Supabase Database
-    const { data: docRecord, error: dbError } = await supabase
+    const basePayload = {
+      user_id,
+      title: documentTitle,
+      filename: file.name,
+      status: 'processing',
+      summary: 'AI Analysis in progress...',
+      risk_score: 'Medium',
+      risk_numerical: 50,
+    };
+
+    let docRecord: any = null;
+    let dbError: any = null;
+
+    // Primary attempt with file_path
+    const res1 = await supabase
       .from('documents')
-      .insert({
-        user_id,
-        title: documentTitle,
-        filename: file.name,
-        file_path: storagePath,
-        status: 'processing',
-        summary: 'AI Analysis in progress...',
-        risk_score: 'Medium',
-        risk_numerical: 50,
-      })
+      .insert({ ...basePayload, file_path: storagePath })
       .select('*')
       .single();
 
+    if (!res1.error && res1.data) {
+      docRecord = res1.data;
+    } else {
+      dbError = res1.error;
+      // Secondary fallback attempt with file_url if file_path column is absent
+      console.warn('[DocumentService] Primary insert failed, trying fallback with file_url:', dbError?.message);
+      const res2 = await supabase
+        .from('documents')
+        .insert({ ...basePayload, file_url: storagePath })
+        .select('*')
+        .single();
+
+      if (res2.data) {
+        docRecord = res2.data;
+        dbError = null;
+      }
+    }
+
     if (dbError || !docRecord) {
       console.error('[DocumentService] Supabase database insert error:', dbError);
-      throw new Error(`Database record creation failed: ${dbError?.message}`);
+      throw new Error(
+        `Database record creation failed: ${dbError?.message}. Please run 'ALTER TABLE public.documents ADD COLUMN IF NOT EXISTS file_path TEXT;' in your Supabase SQL Editor to update your table schema.`
+      );
     }
 
     // 4. Send ONLY { document_id, storage_url, user_id } to AI Webhook
@@ -186,16 +211,17 @@ export const documentService = {
    * Delete a document by ID (removes row from DB & file from Storage)
    */
   async deleteDocument(document_id: string, user_id: string): Promise<void> {
-    // 1. Fetch file_path
+    // 1. Fetch file_path or file_url
     const { data: docRecord } = await supabase
       .from('documents')
-      .select('file_path')
+      .select('*')
       .eq('id', document_id)
       .eq('user_id', user_id)
       .single();
 
-    if (docRecord?.file_path) {
-      await supabase.storage.from('contracts').remove([docRecord.file_path]);
+    const filePath = docRecord?.file_path || docRecord?.file_url;
+    if (filePath) {
+      await supabase.storage.from('contracts').remove([filePath]);
     }
 
     // 2. Delete database record
