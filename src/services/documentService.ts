@@ -46,49 +46,75 @@ export const documentService = {
 
     const documentTitle = file.name.replace(/\.[^/.]+$/, '');
 
-    // 3. Insert document metadata into Supabase Database
-    const basePayload = {
-      user_id,
-      title: documentTitle,
-      filename: file.name,
-      status: 'processing',
-      summary: 'AI Analysis in progress...',
-      risk_score: 'Medium',
-      risk_numerical: 50,
-    };
+    // 3. Insert document metadata into Supabase Database with resilient column fallbacks
+    const payloadVariations = [
+      {
+        user_id,
+        title: documentTitle,
+        filename: file.name,
+        file_path: storagePath,
+        status: 'processing',
+        summary: 'AI Analysis in progress...',
+        risk_score: 'Medium',
+        risk_numerical: 50,
+      },
+      {
+        user_id,
+        title: documentTitle,
+        file_name: file.name,
+        file_path: storagePath,
+        status: 'processing',
+        summary: 'AI Analysis in progress...',
+        risk_score: 'Medium',
+        risk_numerical: 50,
+      },
+      {
+        user_id,
+        title: documentTitle,
+        filename: file.name,
+        file_url: storagePath,
+        status: 'processing',
+        summary: 'AI Analysis in progress...',
+        risk_score: 'Medium',
+        risk_numerical: 50,
+      },
+      {
+        user_id,
+        title: documentTitle,
+        file_name: file.name,
+        file_url: storagePath,
+        status: 'processing',
+        summary: 'AI Analysis in progress...',
+        risk_score: 'Medium',
+        risk_numerical: 50,
+      },
+      {
+        user_id,
+        title: documentTitle,
+        status: 'processing',
+        summary: 'AI Analysis in progress...',
+      },
+    ];
 
     let docRecord: any = null;
     let dbError: any = null;
 
-    // Primary attempt with file_path
-    const res1 = await supabase
-      .from('documents')
-      .insert({ ...basePayload, file_path: storagePath })
-      .select('*')
-      .single();
-
-    if (!res1.error && res1.data) {
-      docRecord = res1.data;
-    } else {
-      dbError = res1.error;
-      // Secondary fallback attempt with file_url if file_path column is absent
-      console.warn('[DocumentService] Primary insert failed, trying fallback with file_url:', dbError?.message);
-      const res2 = await supabase
-        .from('documents')
-        .insert({ ...basePayload, file_url: storagePath })
-        .select('*')
-        .single();
-
-      if (res2.data) {
-        docRecord = res2.data;
+    for (const payload of payloadVariations) {
+      const res = await supabase.from('documents').insert(payload as any).select('*').single();
+      if (!res.error && res.data) {
+        docRecord = res.data;
         dbError = null;
+        console.log('[DocumentService] Successfully inserted document record with payload keys:', Object.keys(payload));
+        break;
+      } else {
+        dbError = res.error;
       }
     }
 
     if (dbError || !docRecord) {
       console.error('[DocumentService] Supabase database insert error:', dbError);
       throw new Error(
-        `Database record creation failed: ${dbError?.message}. Please run 'ALTER TABLE public.documents ADD COLUMN IF NOT EXISTS file_path TEXT;' in your Supabase SQL Editor to update your table schema.`
+        `Database record creation failed: ${dbError?.message}. Please run the schema update SQL snippet in your Supabase SQL Editor.`
       );
     }
 
